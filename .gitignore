@@ -1,0 +1,16 @@
+.credentials.json
+backups/
+cache/
+debug/
+downloads/
+file-history/
+history.jsonl
+local/
+projects/
+session-env/
+sessions/
+shell-snapshots/
+statsig/
+todos/
+plugins/marketplaces/
+plugins/

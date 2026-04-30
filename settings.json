@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/anthropics/skills.git"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "document-skills@anthropic-agent-skills": true
+  }
+}
