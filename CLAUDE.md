@@ -22,3 +22,17 @@ Always load `usadebusk-core` for any USADeBusk task, plus the relevant domain sk
 - Do not modify finalized or client-deliverable documents without explicit confirmation.
 - Do not assume a task is complete until output has been verified.
 - Do not duplicate technical constraints that live in skill files or the MTR — pointer to the source is sufficient.
+
+## Goal-Driven Execution
+Transform imperative tasks into verifiable goals before starting.
+
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan before executing:
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
