@@ -22,6 +22,7 @@ Always load `usadebusk-core` for any USADeBusk task, plus the relevant domain sk
 - Do not modify finalized or client-deliverable documents without explicit confirmation.
 - Do not assume a task is complete until output has been verified.
 - Do not duplicate technical constraints that live in skill files or the MTR — pointer to the source is sufficient.
+- Git commits run autonomously. Any command touching C:\Users\Jwuts\USADEBUSK\ requires explicit confirmation before running.
 
 ## Goal-Driven Execution
 Transform imperative tasks into verifiable goals before starting.
