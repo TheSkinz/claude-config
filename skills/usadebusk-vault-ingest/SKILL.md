@@ -19,8 +19,9 @@ Convert raw DOCX and PDF documents into vault-ready Markdown files and route the
 
 ### Check and install MarkItDown
 ```bash
-pip show markitdown 2>/dev/null || pip install markitdown --quiet
+pip show markitdown 2>/dev/null || pip install "markitdown[docx]" --quiet
 ```
+Note: the base `markitdown` package does not include DOCX support. Always install with `[docx]`.
 
 ### Vault root
 Default: `C:\Users\Jwuts\OneDrive\obsidian-usadebusk`
@@ -103,14 +104,18 @@ Rules:
 
 | Priority | Type | Detection Signals |
 |----------|------|-------------------|
-| 1 | Job Report | `USA\d{5}` or `CND\d{5}` in filename OR first 500 words — this takes precedence even if DSP# also present |
-| 2 | DSP / Proposal | DSP# in filename or content AND "Requested Service" AND "Technical Info/Data" sections present — all three signals required |
-| 3 | Facility Overview | Client + city/state + plant name, no unit tag, no DSP#, no job number |
-| 4 | Heater Card | Unit tag + tube geometry table, no DSP#, no job number |
-| 5 | Knowledge/Reference | No client or job reference; technical content only |
-| 6 | Unresolved | No confident match |
+| 1 | Job Report | `USA\d{5}` or `CND\d{5}` in filename OR first 500 words — takes precedence even if DSP# also present |
+| 2 | DSP / Proposal | DSP# in filename or content AND "Requested Service" AND "Technical Info/Data" — all three required |
+| 3 | USADeBusk Companion Doc | Formal USADeBusk doc number (SOP-*, DCK-*, CO-*) OR authored by USADeBusk/DeBusk Services Group; client + unit tag present |
+| 4 | Client Facility Doc | Client-authored; facility/site signals present; procedural or policy content (permits, access, safety, contractor requirements); no unit tag, no USA#, no DSP# |
+| 5 | Facility Overview | Client + city/state, no unit tag, no DSP#, no job number, not procedural in nature |
+| 6 | Heater Card | Unit tag + tube geometry table, no DSP#, no job number |
+| 7 | Knowledge/Reference | No client or job reference; technical content only |
+| 8 | Unresolved | No confident match |
 
 **Why job number takes priority:** Job reports frequently reference DSP numbers and contain technical language. Checking for USA##### first prevents misclassification of job reports as DSPs.
+
+**Distinguishing Client Facility Doc from Facility Overview:** Facility Overview is a USADeBusk-maintained summary card. Client Facility Docs are external documents — look for client letterhead, client document numbers, or procedural/policy language as the differentiator.
 
 ---
 
@@ -314,19 +319,33 @@ Pattern: `USA\d{5}` or `CND\d{5}` in filename or first 500 words
 Signals: DSP# AND "Requested Service" AND "Technical Info/Data" — all three required
 → Dissolve into heater cards per DSP ingestion logic above
 
-### Step 3 — Heater/unit match (standalone)
+### Step 3 — USADeBusk companion document
+Signals: formal USADeBusk doc number (SOP-*, DCK-*, CO-*) OR authored by USADeBusk/DeBusk Services Group; client + unit tag present; no USA#, no DSP# triggering full DSP logic
+→ `02-facilities/[Client]/[City-State]/[existing-unit-folder]/[doc-name].md`
+→ Use the document number as filename (e.g. `SOP-DCK-F802-001.md`, `CO-USA26022-001.md`)
+→ If unit subfolder does not exist, create automatically for known clients
+→ doc_type: `sop`, `change-order`, `pre-job-package`, or `other` as appropriate
+
+### Step 4 — Client facility document
+Signals: client-authored (client letterhead or client doc number format); facility/site signals present; procedural or policy content (permits, access requirements, safety classifications, contractor requirements, site-specific policies); no unit tag, no USA#, no DSP#
+→ `02-facilities/[Client]/[City-State]/[normalized-doc-name].md`
+→ Normalize filename: strip client doc numbers, use descriptive slug (e.g. `Baytown-Contractor-Safety-Requirements.md`)
+→ Do NOT route to the facility overview file — write as a companion file at the facility folder level
+→ doc_type: `procedure`, `policy`, or `other` as appropriate
+
+### Step 5 — Heater/unit match (standalone)
 Signals: unit tag, tube geometry data, no DSP#, no job number
 → `02-facilities/[Client]/[City-State]/Unit-[UnitID]-[Service]/[UnitID].md`
 
-### Step 4 — Facility match (no unit)
-Signals: client + city/state, no unit tag, no DSP#, no job number
+### Step 6 — Facility match (no unit)
+Signals: client + city/state, no unit tag, no DSP#, no job number, not procedural in nature
 → `02-facilities/[Client]/[City-State]/[Client-City-State].md`
 
-### Step 5 — Knowledge/reference
+### Step 7 — Knowledge/reference
 Signals: no client or job reference; technical content
 → `04-knowledge/[inferred-subcategory]/[filename].md`
 
-### Step 6 — Unresolved
+### Step 8 — Unresolved
 → `00-inbox/[original-filename].md` with `routing: unresolved`
 
 ---
@@ -373,7 +392,7 @@ job_number: [USA##### or CND##### or null]
 job_region: [US | CA | null]
 unit_id: [tag or null]
 service: [crude | coker | vac | reformer | hydrotreater | pigging | other | null]
-doc_type: [job-note | heater-card | facility-overview | sop | proposal | quote | reference | field-report | other]
+doc_type: [job-note | heater-card | facility-overview | sop | change-order | pre-job-package | procedure | policy | inspection-report | data-sheet | proposal | quote | reference | field-report | other]
 revision: [integer or null]
 routing: [resolved | unresolved]
 routing_note: [one line]
@@ -479,6 +498,8 @@ Post-conversion cleanup:
 - Heater tag inconsistent and unresolvable → flag as LOW confidence, list all variants found
 - Tube Geometry conflict on existing card → flag with old vs new values, hold for Jesse confirmation
 - City/state string cannot be normalized confidently → flag, route to `00-inbox`
+- Client facility doc cannot be confidently distinguished from a facility overview → flag, ask Jesse before writing
+- USADeBusk companion doc has unit tag but unit folder does not exist and client is unknown → flag, route to `00-inbox`
 - Job report heater identification fails → flag, ask Jesse before writing to any heater card
 - Conversion produces <100 words → flag as possible extraction failure
 - Image-only PDF → flag, tell Jesse to run through Gemini
@@ -490,6 +511,7 @@ Post-conversion cleanup:
 - **Never write files during dry-run.**
 - **Never overwrite existing Tube Geometry fields** without Jesse confirmation when conflict exists.
 - **Never overwrite Field Notes subsections.** Append only. Pre-Execution Estimate subsections are permanent historical record.
+- **Never route a client facility doc into the facility overview file.** Client procedures and policies are always separate companion files at the facility folder level.
 - **Never create new client folders for unknown clients.** Flag unknowns.
 - **Create missing subfolders for known clients automatically.** Note in dry-run output.
 - **Never set Bid History status beyond `pending`.** Jesse updates manually.
