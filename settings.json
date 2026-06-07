@@ -1,13 +1,21 @@
 {
+  "enabledPlugins": {
+    "document-skills@anthropic-agent-skills": true,
+    "claude-obsidian@claude-obsidian-marketplace": true
+  },
   "extraKnownMarketplaces": {
     "anthropic-agent-skills": {
       "source": {
         "source": "git",
         "url": "https://github.com/anthropics/skills.git"
       }
+    },
+    "claude-obsidian-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "AgriciDaniel/claude-obsidian"
+      }
     }
   },
-  "enabledPlugins": {
-    "document-skills@anthropic-agent-skills": true
-  }
+  "agentPushNotifEnabled": true
 }
