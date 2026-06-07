@@ -6,6 +6,7 @@ downloads/
 file-history/
 history.jsonl
 local/
+plans/
 projects/
 session-env/
 sessions/
@@ -14,3 +15,4 @@ statsig/
 todos/
 plugins/marketplaces/
 plugins/
+.last-cleanup
