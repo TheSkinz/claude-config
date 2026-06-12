@@ -1,4 +1,4 @@
-﻿# CLAUDE.md (Global)
+# CLAUDE.md (Global)
 
 ## Who I Am
 Jesse — project manager and field supervisor at USADeBusk.
