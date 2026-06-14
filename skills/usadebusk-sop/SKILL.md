@@ -56,7 +56,7 @@ Filter Press (100 PSI) → 3" Camlock → Clean Tank
 ## Looped Circuit (Jumper Spool)
 - 180° jumper spool connects Rad. Outlet Pass 1 to Rad. Outlet Pass 2
 - Pig path: Conv. Inlet P1 → P1 coil → Rad. Outlet P1 → Jumper → Rad. Outlet P2 → P2 coil (reversed) → Conv. Inlet P2
-- Longer circuit = pig transit 15–20+ minutes; extended blind period between launches
+- Longer circuit — extended pig transit and blind period. Transit is a function of footage, pipe ID, and GPM — observed ~6–30 min across looped jobs, not a fixed range.
 - Final pig size may need to be larger for wall contact through the longer combined circuit (e.g., 6.5" vs. 6.25")
 
 ---
@@ -116,6 +116,12 @@ Same mechanical procedure plus:
 - Final rinse to neutral pH
 - Reference NACE SP0170 or applicable customer spec
 - **Firewater prohibited.** Confirm water source before writing.
+
+**Stainless corrosion constraints (DRAFTED-NOT-CANONICAL — verify against specific customer spec before treating ppm numbers as final):**
+
+1. **Chloride SCC** (water-spec governed, NOT NACE SP0170): Default limit ≤50 ppm Cl⁻ (ASME PCC / API 650 App.S / API 570). Fired coils that cannot drain-and-dry → target <1 ppm. ≤250 ppm acceptable only with ~72 hr contact cap plus immediate drain/dry. 500 ppm = carbon steel only — never stainless. Chlorides concentrate at hot walls; failures reported as low as 10 ppm.
+
+2. **PTA-SCC** (the SP0170 mechanism): Soda-ash alkaline wash before opening coil to atmosphere, or N₂/dry-air purge. pH ≥10.0. Rinse to neutral. Decode tube ID before or concurrent with the alkaline wash — alkaline wash over coke is ineffective per SP0170. Confirm N₂ source.
 
 ---
 

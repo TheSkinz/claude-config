@@ -93,7 +93,7 @@ Fired heater tubes accumulate petroleum coke (carbon-rich thermal cracking bypro
 
 ### Metallurgy
 - **Carbon steel:** Standard — no modification
-- **Stainless steel:** Requires soda ash passivation after mechanical cleaning. Customer typically provides soda ash. pH target ≥ 10.0 throughout circulation. 1–2 ft/s velocity. 4–6 hours. Final flush to neutral. Firewater prohibited in stainless coils.
+- **Stainless steel:** Requires soda-ash PTA neutralization (per NACE SP0170) after mechanical cleaning. Customer typically provides soda ash. pH target ≥ 10.0 throughout circulation. 1–2 ft/s velocity. 4–6 hours. Final flush to neutral. Firewater prohibited in stainless coils. Chloride SCC (water-spec governed, NOT SP0170): default ≤50 ppm, fired coils <1 ppm, 500 ppm is CS-only. PTA-SCC: soda-ash wash per NACE SP0170, decode before/with wash.
 
 ### Key Job Variables
 Pass/circuit count · Tube ID (conv and rad) · Flange size & rating · Total footage per pass · Tube arrangement (H vs V) · Fouling type · Metallurgy · Loop configuration
