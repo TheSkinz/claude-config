@@ -1,5 +1,5 @@
 # USADeBusk Master Reference Document
-**Version 1.0 | Last Updated: March 2026**
+**Version 1.0 | Last Updated: June 2026**
 *Living document — append new insights to Module 10 first, then integrate into the relevant module on periodic cleanup.*
 
 ---
@@ -136,13 +136,15 @@ Typical stakeholders at a refinery:
 | Total tube footage per pass | Primary driver of pigging duration estimate |
 | Tube arrangement (H vs. V) | Affects equipment placement, launcher access, rig-in complexity |
 | Expected fouling type | Hard coke vs. pitch vs. soft coke — affects pig progression strategy |
-| Tube metallurgy | Carbon steel = standard; Stainless steel = requires soda ash passivation |
+| Tube metallurgy | Carbon steel = standard; Stainless steel = requires soda-ash PTA neutralization (per NACE SP0170) |
 | Coil pairing / loop configuration | Which passes can be looped together with 180° jumper spools to create combined circuits |
 
 ## Tube Dimensions — Common Reference
 - 4" Sch 40: OD = 4.500", ID = 4.026"
 - 5" (convection typical in some units): ID ~5.047"
 - 6" Sch 40: OD = 6.625", ID = 6.065"
+- 8" Sch 40: OD = 8.625", ID = 7.981"
+- 10" Sch 40: OD = 10.750", ID = 10.020"
 - Tube wall schedule (Sch 40 is common; heavier wall in high-temp radiant zones)
 
 ## Metallurgy — Passivation
@@ -217,7 +219,7 @@ Progressive pig sizing from small to line size and oversized:
 
 ## Flow Path (Standard Single Pass — Convection-to-Radiant Direction)
 ```
-TriMax Clean Tank → Waterous Pump → Fig.200 CONV port → Jetting Hose → 
+TriMax Clean Tank → Pump Assembly → Fig.200 CONV port → Jetting Hose → 
 Pig Launcher (Conv. Inlet Flange) → Convection Tubes (serpentine) → 
 Cross-over → Radiant Tubes → Pig Receiver (Rad. Outlet Flange) → 
 Jetting Hose → Fig.200 RAD port → Internal ceiling pipe → 
@@ -457,7 +459,7 @@ Customer sends a Request for Quote containing some or all of:
 - Heater tag(s) and unit identification
 - Coil/pass count
 - Tube ID and footage (sometimes from drawings, sometimes approximate)
-- Requested scope (pigging only, pigging + smart pig, pigging + passivation)
+- Requested scope (pigging only, pigging + smart pig, pigging + PTA neutralization)
 - Requested schedule / turnaround dates
 - Applicable customer standards or specifications
 
@@ -552,7 +554,7 @@ When customers request a quote, these are the inputs needed to build an accurate
 **Variant A — Standard (Carbon Steel):**
 Standard pigging procedure, fresh condensate or equivalent water source, no passivation.
 
-**Variant B — Stainless Steel (Passivation Required):**
+**Variant B — Stainless Steel (PTA Neutralization Required):**
 Same mechanical procedure plus:
 - Soda ash solution circulation post-cleaning
 - pH monitoring throughout (target ≥ 10.0)
@@ -670,6 +672,4 @@ Before generating invoice:
 ---
 
 **[2026-03] | Module 4 | Crossover reducer:** The reducer between convection outlet and radiant inlet sits on the cross-over piping (external). A significant obstruction point — has been encountered as a blockage location when transitioning from 5" convection pigs to 6" radiant pigs. Must be addressed explicitly in pig progression planning for mixed-ID heaters.
-
-**[2026-03] | Module 4 | Looped circuit transit times:** Looped passes (joined via jumper spool) have pig transit times of 15–20 minutes or more for long circuits. Extended blind period between pig launches — careful monitoring required. Final pig size may need to be larger (e.g., 6.5" vs. 6.25") to achieve full wall contact through the longer combined circuit.
 [2026-03] | Module 1 | Third-party markup clarification: 10% is the baseline (no contract). Some facilities have contract rates as low as 5%. Always confirm applicable rate before invoicing or finalizing a proposal.
