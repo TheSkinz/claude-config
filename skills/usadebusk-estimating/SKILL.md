@@ -50,7 +50,7 @@ description: Load this skill when the task involves building a proposal, analyzi
 - Pumping rate: TriMax actively pigging
 - Non-pumping/stand-by rate: rig-in, rig-out, stand-by
 
-**Third-party markup:** 10% baseline; contract-dependent.
+**Third-party markup:** 10% baseline; contract-dependent. Confirm applicable contract markup before finalizing any proposal or invoice; some facilities contract as low as 5%.
 
 ---
 
