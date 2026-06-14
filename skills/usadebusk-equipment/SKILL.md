@@ -8,10 +8,13 @@ description: Load this skill when the task involves equipment specifications, ha
 ## TriMax Pumper Unit
 USADeBusk's proprietary trailer-mounted pigging pumper. High-volume / low-pressure system — pigs are propelled by flow, not pressure alone. Not a jetting unit.
 
+**Unit architecture — TRIPLE:** One TriMax trailer contains 3 independent pumping assemblies. Each assembly has its own engine, gearbox, pump, and valve manifold. All three share ONE clean tank (3,000 gal) and ONE dirty tank (2,000 gal). Three operator stations in the control cab — one per assembly. Each assembly cleans one circuit independently: direction, flow state, and progress are set per assembly. Scope determines how many of the 3 assemblies are used; unused assemblies sit idle.
+
 **Physical layout (left → right):**
-Control cab | Dirty tank (2,000 gal) | Clean tank (3,000 gal) | Waterous CMU Two-Stage Centrifugal Pump
+Control cab (3 operator stations) | Dirty tank (2,000 gal, shared) | Clean tank (3,000 gal, shared) | 3× pump/engine assemblies
 
 **Internal routing:**
+- Feed-side order (each assembly): clean tank → suction strainer → pump → flow meter → valve manifold → Fig. 200 port
 - Return water enters via Fig. 200 RAD port at trailer rear
 - Fixed pipe routes along trailer ceiling toward clean tank
 - Diverter (90° plunger, operator-controlled from cab) at junction above tanks
@@ -108,9 +111,9 @@ Control cab | Dirty tank (2,000 gal) | Clean tank (3,000 gal) | Waterous CMU Two
 
 ---
 
-## Dual Pumper Configuration (2× TriMax)
-- Each TriMax has its own clean tank (3,000 gal) and dirty tank (2,000 gal)
-- One shared 4×3 pump and one shared filter press
-- T-connections with valve manifolds on both sides of T link dirty tank outlets to shared pump suction
-- Clean filtrate returns to respective clean tanks
-- Both pig same direction on separate circuits simultaneously
+## Second TriMax (2× TriMax Configuration)
+- Terminology: "second TriMax" or "2× TriMax" — never "dual-pumper" (customers misread as 2-circuit-max). Use "Triple" for the unit itself.
+- Each TriMax = own tanks (3,000 gal clean / 2,000 gal dirty) + own 3 pump/engine assemblies → 2× TriMax = up to 6 simultaneous circuits
+- Filtration scales conditionally: 2× filter presses + 2× 4×3 pumps when customer requires it AND a 2nd press is available; otherwise 1× shared filter press + 1× shared 4×3 pump serving both TriMax units
+- When shared: T-connections with valve manifolds on both sides link both dirty-tank outlets to shared pump suction; clean filtrate returns to respective clean tanks
+- Each assembly runs its own circuit fully independently — direction, flow state, and progress are set per assembly. No cross-assembly direction constraint.
