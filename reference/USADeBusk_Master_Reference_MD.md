@@ -147,11 +147,17 @@ Typical stakeholders at a refinery:
 
 ## Metallurgy — Passivation
 - **Carbon steel:** Standard process — no modification needed
-- **Stainless steel:** Requires passivation. Soda ash solution mixed and circulated through coil after mechanical cleaning to restore passive oxide layer. Customer typically provides soda ash or pre-mixes before USADeBusk arrives. USADeBusk can supply if required. pH monitoring required throughout.
+- **Stainless steel:** Requires soda-ash PTA neutralization (per NACE SP0170) after mechanical cleaning. Soda ash solution mixed and circulated through coil. Customer typically provides soda ash or pre-mixes before USADeBusk arrives. USADeBusk can supply if required. pH monitoring required throughout.
   - Target pH: maintained above ~10.0 during circulation
   - Circulation velocity: ~1–2 ft/s
   - Duration: typically 4–6 hours
   - Final flush to neutral pH before job closeout
+
+**Two corrosion mechanisms govern stainless decoking (DRAFTED-NOT-CANONICAL — verify against specific customer stainless spec before treating ppm numbers as final):**
+
+1. **Chloride SCC** (water-spec governed, NOT NACE SP0170): Default limit ≤50 ppm Cl⁻ per ASME PCC / API 650 App.S / API 570. Fired coils that cannot drain-and-dry → target <1 ppm. ≤250 ppm acceptable only with approximately 72-hour contact cap plus immediate drain/dry. 500 ppm = carbon steel only — never stainless. Chlorides concentrate at hot walls; failures reported as low as 10 ppm.
+
+2. **PTA-SCC** (the SP0170 mechanism): Requires soda-ash alkaline wash before opening the coil to atmosphere, or N₂/dry-air purge. pH ≥10.0 throughout. Final rinse to neutral. Decode tube ID before or concurrent with the alkaline wash — alkaline wash applied over coke is ineffective per SP0170. Confirm N₂ source.
 
 ## Tube Coil Geometry for Diagramming
 **Serpentine (standard convection):**
@@ -233,8 +239,16 @@ Dirty Tank → 3" Camlock → 4×3 Pump → 3" Camlock → Filter Press (100 PSI
 When two passes are looped:
 - 180° jumper spool connects Radiant Outlet of Pass 1 to Radiant Outlet of Pass 2
 - Pig travels: Conv. Inlet Pass 1 → full Pass 1 coil → Rad. Outlet Pass 1 → Jumper Spool → Rad. Outlet Pass 2 → full Pass 2 coil (reverse direction) → Conv. Inlet Pass 2
-- Creates longer circuit — pig transit times of 10–20+ minutes depending on footage
+- Creates longer circuit — pig transit time varies with footage, internal pipe diameter, and GPM (the three inputs to pig velocity). Observed range on looped circuits: ~6 to ~30 minutes. Treat as derived per job, not fixed.
 - Requires careful monitoring due to longer blind period between launches
+
+## Supply Configurations
+
+**Option A — No Filtration (Open Loop):**
+Supply: Fire hydrant → fire hose → each TriMax clean tank. Return: each TriMax dirty tank → 3" camlock → coke pit drain / oily water sewer. Used when filtration is not required or water discharge to drain is permitted by site.
+
+**Option B — Filtration (Closed Loop):**
+Supply: Frac tank → TriMax clean tank(s); no hydrant required. Return routes through filtration: dirty tank → 4×3 trash pump → filter press → clean tank. When running 2× TriMax: 2× filter presses + 2× 4×3 pumps when customer requires and a second press is available; otherwise 1× shared filter press + 1× shared 4×3 pump serving both units. See usadebusk-equipment for filtration detail and T-connection configuration.
 
 ## Cleaning Completion Criteria
 - Effluent discharge time ≤ 3–5 seconds per pig pass
@@ -254,15 +268,16 @@ When two passes are looped:
 # MODULE 5 — EQUIPMENT LIBRARY
 
 ## TriMax Pumper Unit
-**What it is:** USADeBusk's proprietary trailer-mounted pigging pumper. Transports cleaning pigs bi-directionally through furnace tubes using high-volume, low-pressure water.
+**What it is:** USADeBusk's proprietary trailer-mounted pigging pumper. The TriMax is a TRIPLE — one trailer contains 3 independent pumping assemblies, each with its own engine, gearbox, pump, and valve manifold. Three operator stations occupy the control cab, one per assembly. All three assemblies share one clean tank (3,000 gal) and one dirty tank (2,000 gal). Each assembly cleans one circuit independently — direction, flow state, and progress are tracked separately per assembly. Scope determines how many assemblies are active; unused assemblies sit idle.
 
 **Physical layout (left to right):**
-- Control cab (operator station, far left)
-- Dirty tank (2,000 gallons)
-- Clean tank (3,000 gallons)
-- Waterous CMU Series Two-Stage Centrifugal Pump (far right end)
+- Control cab (3 operator stations, far left)
+- Dirty tank (2,000 gallons, shared)
+- Clean tank (3,000 gallons, shared)
+- 3× pump/engine assemblies (far right)
 
 **Internal routing:**
+- Routing order (per assembly): clean tank → suction strainer → pump → flow meter → valve manifold → Fig. 200 port
 - Return water from receiver enters via Fig. 200 RAD port at trailer rear
 - Routes via fixed pipe along trailer ceiling toward clean tank
 - Diverter (90° plunger, operator-controlled from cab) sits at junction above dirty/clean tank
@@ -654,42 +669,7 @@ Before generating invoice:
 
 ---
 
-**[2026-03] | Module 5 | Dual pumper configuration:** When running 2x TriMax simultaneously, each unit has its own clean tank (3,000 gal) and dirty tank (2,000 gal). One shared 4×3 pump and one shared filter press. T-connections with valve manifolds on both sides link each dirty tank outlet to shared pump suction; clean filtrate returns to respective clean tanks. Both pumpers pig the same direction — B→R means convection-inlet-to-radiant-outlet, the standard pig travel direction.
-
 **[2026-03] | Module 4 | Crossover reducer:** The reducer between convection outlet and radiant inlet sits on the cross-over piping (external). A significant obstruction point — has been encountered as a blockage location when transitioning from 5" convection pigs to 6" radiant pigs. Must be addressed explicitly in pig progression planning for mixed-ID heaters.
 
 **[2026-03] | Module 4 | Looped circuit transit times:** Looped passes (joined via jumper spool) have pig transit times of 15–20 minutes or more for long circuits. Extended blind period between pig launches — careful monitoring required. Final pig size may need to be larger (e.g., 6.5" vs. 6.25") to achieve full wall contact through the longer combined circuit.
-[2026-03] | System | Skills architecture deployed: Five USADeBusk skills built and uploaded to Claude.ai (Customize → Skills): usadebusk-core, usadebusk-equipment, usadebusk-estimating, usadebusk-sop, usadebusk-ops. Core loads on all tasks; others load by task type. Skills available in all chats and projects, not just within Projects.
-[2026-03] | System | Project instructions updated to v2: All three Claude Projects (Sales/Proposals, Technical Documentation, Operations/Admin) updated — knowledge base sections removed, domain context now sourced from skills. Project instructions retain task-specific templates, section structures, and workflow rules not covered by skills.
 [2026-03] | Module 1 | Third-party markup clarification: 10% is the baseline (no contract). Some facilities have contract rates as low as 5%. Always confirm applicable rate before invoicing or finalizing a proposal.
-[2026-03] | Module 5 | Skill gap — core v2 additions: 8" Sch 40 (ID 7.981") and 10" Sch 40 (ID 10.020") added to tube dimensions table. Cross-skill routing table added to core. Behavior rules formalized in core (DSP# required, heater tag required, never assume metallurgy/water source, flag conv ID > rad ID).
-[2026-03] | Module 8 | Pending master doc update: Variant B stainless chloride limits from Technical Documentation project not yet added to Module 3 of master reference doc. Add: fresh solution ≤250 ppm chloride, spent solution ≤500 ppm, verify <0.5 ppm before fill.
-[2026-03] | System | Planned expansion: Field Project Management skill and project in development. Scope: mobilization through demob, job sheet creation, task hour tracking, field notes, shift logging, problem-solving, cost tracking, project report generation.
-
-Equipment layout (left to right, roughly):
-Frac Tank (B only) | TriMax unit(s) | Heater | Coke Pit / OWS drain terminus
-Option A (no filtration):
-
-Supply: Fire hydrant → fire hose → each TriMax clean tank
-Return: Each TriMax dirty tank → 3" camlock → Coke Pit Drain / Oily Water Sewer
-1× or 2× TriMax variant
-
-Option B (filtration):
-
-Supply: Frac tank → TriMax clean tank(s)
-Filtration loop: Dirty tank → 4×3 trash pump → filter press → clean tank
-Closed loop, no hydrant
-1× or 2× TriMax variant, 2× = 2 filter presses, 2 trash pumps, shared or mirrored depending on your earlier description
-Frac tank appears center-left
-
-Heater (right side, all scenarios):
-
-Generic heater block
-Launcher connections vary by pass count and active pump count
-5-pass: T2 center pump shown disabled
-
-Header/footer:
-
-Header: job-specific data fields (facility, client, job number, etc.)
-Footer: tech specs + legend + symbol descriptions
-Same size/scale across all diagrams, only data changes
