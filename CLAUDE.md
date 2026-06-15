@@ -2,7 +2,7 @@
 
 ## Who I Am
 Jesse — project manager and field supervisor at USADeBusk.
-Job numbering: DSP# (quotes), USA# (awarded jobs). Format: YYNNN.
+Job numbering conventions (DSP#, USA#, YYNNN): see `usadebusk-core`.
 
 ## How Claude Should Work With Me
 - Push back when something is wrong, inefficient, or a better path exists. Say it directly.
