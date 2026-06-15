@@ -1,3 +1,10 @@
+---
+status: RETIRED
+superseded_by: usadebusk-core + domain skills (TheSkinz/claude-config)
+retired: 2026-06
+note: Not a live layer. Do not load, reference, or treat as canonical. Skills are the source of truth.
+---
+
 # USADeBusk Master Reference Document
 **Version 1.0 | Last Updated: June 2026**
 *Living document — append new insights to Module 10 first, then integrate into the relevant module on periodic cleanup.*
@@ -673,3 +680,4 @@ Before generating invoice:
 
 **[2026-03] | Module 4 | Crossover reducer:** The reducer between convection outlet and radiant inlet sits on the cross-over piping (external). A significant obstruction point — has been encountered as a blockage location when transitioning from 5" convection pigs to 6" radiant pigs. Must be addressed explicitly in pig progression planning for mixed-ID heaters.
 [2026-03] | Module 1 | Third-party markup clarification: 10% is the baseline (no contract). Some facilities have contract rates as low as 5%. Always confirm applicable rate before invoicing or finalizing a proposal.
+
