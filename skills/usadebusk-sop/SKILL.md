@@ -28,6 +28,11 @@ description: Load this skill when the task involves writing a procedure, SOP, pr
 8. **Run AFTER flow test** at pigging completion
 9. Log all data on service receipt
 
+> **Pigging diagrams:** See `references/sop-pigging-diagrams.md` for the looped jumper-spool circuit (D4)
+> and the smallest-ID-first pig progression + larger-ID reversal procedure (D7), extracted verbatim from B1.
+> **Draft:** D7's reversal control-action sequence (throttle → directional switch → re-throttle) is
+> field-unconfirmed pending operator verification — do not treat that step order as canon.
+
 **Rig-Out (12-hour fixed)**
 - Remove launchers, receivers, all hoses and surface equipment
 - Reconnect customer flanges, clean site
