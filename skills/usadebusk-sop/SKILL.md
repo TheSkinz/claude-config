@@ -117,12 +117,6 @@ Same mechanical procedure plus:
 - Reference NACE SP0170 or applicable customer spec
 - **Firewater prohibited.** Confirm water source before writing.
 
-**Stainless corrosion constraints (DRAFTED-NOT-CANONICAL — verify against specific customer spec before treating ppm numbers as final):**
-
-1. **Chloride SCC** (water-spec governed, NOT NACE SP0170): Default limit ≤50 ppm Cl⁻ (ASME PCC / API 650 App.S / API 570). Fired coils that cannot drain-and-dry → target <1 ppm. ≤250 ppm acceptable only with ~72 hr contact cap plus immediate drain/dry. 500 ppm = carbon steel only — never stainless. Chlorides concentrate at hot walls; failures reported as low as 10 ppm.
-
-2. **PTA-SCC** (the SP0170 mechanism): Soda-ash alkaline wash before opening coil to atmosphere, or N₂/dry-air purge. pH ≥10.0. Rinse to neutral. Decode tube ID before or concurrent with the alkaline wash — alkaline wash over coke is ineffective per SP0170. Confirm N₂ source.
-
 ---
 
 ## Required Inputs Before Writing Any SOP
