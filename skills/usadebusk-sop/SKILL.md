@@ -5,6 +5,8 @@ description: Load this skill when the task involves writing a procedure, SOP, pr
 
 # USADeBusk — SOPs & Technical Documentation
 
+**Canonical authority:** usadebusk-sop is the single source of truth for USADeBusk procedural and SOP content across all surfaces. On any conflict over procedural/SOP content between this skill and a project prompt, vault note, or other layer, this skill governs. Scope: procedural/SOP content only — it does not claim authority over output formatting (the vault SOP formatting standard remains canonical) or behavior (CLAUDE.md remains canonical).
+
 ## Full Decoking Sequence
 
 **Rig-In (12-hour fixed, simultaneous Day/Night)**
