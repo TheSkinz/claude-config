@@ -31,6 +31,10 @@ Confirm with Jesse if session context suggests otherwise.
 `[vault-root]\00-inbox\raw-docs\`
 Create if it doesn't exist.
 
+### OneDrive vault safety
+Before any recursive vault read, move, or delete, follow `references/vault-onedrive-safety.md`
+(pin state, delete-propagation, conflict sweep). Non-negotiable for OneDrive-backed paths.
+
 ---
 
 ## Commands
