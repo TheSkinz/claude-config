@@ -32,6 +32,8 @@ Control cab (3 operator stations) | Dirty tank (2,000 gal, shared) | Clean tank 
 
 **Operating pressure:** 100–400 PSI typical; 600 PSI absolute system limit. Over-pressure checklist required above 500 PSI.
 
+**Circuit diagrams:** Flow topology, port/color identity, capacity scaling, diverter states, and feed-assembly flow states are diagrammed in `references/equipment-circuit-diagrams.md` — Master Flow Circuit (D1), Port/Direction/Color Map (D3), Circuit Capacity & Scaling (D5), Diverter State Machine (D6), and Generic Feed Assembly + 3 Flow States (D8). Consult it when reasoning about how the pumper moves water through a circuit.
+
 ---
 
 ## Filter Press
