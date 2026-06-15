@@ -61,6 +61,9 @@ Fired heater tubes accumulate petroleum coke (carbon-rich thermal cracking bypro
 | Kicksolve | Chemical additive for mobilizing hardened residual product/pitch |
 | Ticket Breakdown | Per-job Excel file: all billable resources, durations, rates |
 | Service Receipt | Handwritten daily field doc completed by PM per 12-hour shift |
+| TriMax (Triple) / second TriMax | Naming lock. The pumper unit is a "Triple" (3 independent assemblies); a 2× deployment is a "second TriMax." Never "dual-pumper." Dead string: 'dual-pumper' / 'dual pumper' / 'Dual pumper' — flag and correct on sight. Equipment specs live in usadebusk-equipment. |
+
+⚠️ TERMINOLOGY FLAG: "Triple" and "second TriMax" are canonical. Never write "dual-pumper" in any document, internal or customer-facing — customers misread it as a pumper limited to two circuits. Flag and correct on sight.
 
 ---
 
@@ -83,6 +86,8 @@ Fired heater tubes accumulate petroleum coke (carbon-rich thermal cracking bypro
 - **Helical (radiant, VC heaters):** Coil wraps around circumference.
 - **Return bend:** Cast 180° fitting. Common.
 - **Plug header:** Box header with removable plugs at tube ends. Older design.
+
+When reasoning about coil topology — serpentine reversal, conv → crossover → rad order, or where an ID transition can occur — see `references/core-coil-template.md` (Diagram 2). It is a template: tube count is per-job and ID transitions can occur mid-pass between any tubes, not only at the crossover.
 
 ### Common Tube Dimensions
 | Size | OD | ID |
