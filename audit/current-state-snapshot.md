@@ -2,6 +2,8 @@
 
 **Generated:** 2026-06-11 · **Machine:** Windows 11, user `Jwuts` · **Mode:** read-only inventory (nothing modified)
 
+> **Superseded (partial) 2026-06-15:** Sales & Proposals project dissolved; proposal authority relocated to `usadebusk-estimating` skill (config-repo commit `025578c`). Lines 118, 122, 187, 192 of this snapshot describe the prior state and are now stale. All other content reflects 2026-06-11 state.
+
 This is a deliverable report, not an implementation plan. The task is fully read-only and complete as written below. No system changes are proposed.
 
 ---

@@ -24,7 +24,7 @@ description: Load this skill when the task involves building a proposal, analyzi
 - All projects built on **12-hour shift cycles**
 - Operations run **24/7** — Day and Night shift handovers
 - **Total duration = Rig-In + Pigging Hours + Rig-Out ± Rig-Over + Stand-By**
-- Mob/Demob: 12-hour simultaneous Day and Night events (fixed)
+- Mob/Demob: 12-hour simultaneous Day and Night events (fixed) — costed as Day-shift bucket only: drive hours + per diem per travel day per person + equipment travel costs; presented as two separate lump-sum line items (Mob / Demob)
 
 **Pigging duration benchmark:** ~100 ft/hour per pass (nominal fouling)
 - 3,000 ft coil = ~30 pigging hours
