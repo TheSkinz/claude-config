@@ -24,7 +24,7 @@ description: Load this skill when the task involves building a proposal, analyzi
 - All projects built on **12-hour shift cycles**
 - Operations run **24/7** — Day and Night shift handovers
 - **Total duration = Rig-In + Pigging Hours + Rig-Out ± Rig-Over + Stand-By**
-- Mob/Demob: 12-hour simultaneous Day and Night events (fixed) — costed as Day-shift bucket only: drive hours + per diem per travel day per person + equipment travel costs; presented as two separate lump-sum line items (Mob / Demob)
+- Mob/Demob: 12-hour simultaneous Day and Night events (fixed). Costing is computed separately — see **Mob/Demob Costing** below.
 
 **Pigging duration benchmark:** ~100 ft/hour per pass (nominal fouling)
 - 3,000 ft coil = ~30 pigging hours
@@ -34,6 +34,36 @@ description: Load this skill when the task involves building a proposal, analyzi
 **Rig-In / Rig-Out:** Fixed events. Duration varies by pass count and access complexity. Proposal-generation defaults: Rig-In 6 hrs, Rig-Out 6 hrs, Smart Pig 4 hrs (when applicable) — adjust per pass count and access.
 
 **SIMOPS:** Multi-heater jobs require overlapping heater timeline visibility — resource stacking and scheduling commitments visible across all heater cards simultaneously.
+
+---
+
+### Mob/Demob Costing
+
+Basis: Deer Park, TX shop → facility, one-way miles per trip. Mob and Demob are
+calculated separately; Demob mirrors Mob as the return trip. Presented as two
+lump-sum line items (Mob separate from Demob).
+
+1. Equipment travel — one-way miles × $3.00/mile × number of equipment pieces
+   traveling. The $3.00/mile includes driver labor (drivers carry no separate
+   travel-labor line). $3.00/mile is the default; confirm per job. One driver per
+   piece (drivers = pieces traveling).
+
+2. Driver per diem — drivers × drive-days × contract per-diem rate. Drive-days =
+   total one-way drive time ÷ ~10 hrs/day, rounded up; any drive over 1 hour
+   accrues at least one per diem, and per diem accrues per driver per drive-day
+   (e.g., 2 drivers × 2-day haul = 4 per diems). Per-diem rate is the contract
+   per-diem line (currently $150/day); confirm per contract.
+
+3. Non-driver crew travel — (total crew − drivers) × hourly labor rate × actual
+   travel hours (drive or air; typically 8, occasionally as low as 1). Each
+   non-driver also receives exactly one day of per diem (contract rate). Non-driver
+   travel never exceeds one day.
+
+4. Travel ancillaries — rental cars, flights, and other travel rentals at the
+   quoted day/unit rate + contract third-party markup.
+
+Costing (above) is distinct from duration/scheduling. The Duration Model's
+mob/demob entry governs how mob/demob occupies the schedule; it does not set price.
 
 ---
 
