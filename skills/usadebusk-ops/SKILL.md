@@ -6,19 +6,48 @@ description: Load this skill when the task involves service receipts, ticket bre
 # USADeBusk — Operations & Field Admin
 
 ## Service Receipt
-Handwritten daily document completed by PM for each 12-hour shift.
+Handwritten daily document completed by PM for each 12-hour shift. Canonical field structure (this is the receipt's field map; the Step 1 table below is the extraction map):
 
-**Key fields:**
-- Date, shift (Day/Night), job number (USA#)
-- Equipment and hours: TriMax, filter press, 4×3 pump, crew trucks, support units
-- Labor headcount and hours: Supervisor, Operators
-- Per diem count
-- Materials: pigs (type and size), DEF
-- Third-party services (description, hours, cost)
-- Plant Down Time (hours, cause)
-- Shift summary (narrative)
+**Header:**
+- Customer name + contact
+- Date · Shift (Day/Night)
+- Location
+- Job # / PO
+- Unit # / Pass #
 - Clean ID — largest pig size that passed through the full circuit without obstruction. Max pig size = tube ID + 0.250".
-- Customer signature and supervisor signature
+- Total Length — footage pigged this shift, if recorded
+
+**Equipment hours:**
+- **Pumper — hours.** (L/C/R is preprinted on the form — legacy circling convention, no longer used.) Which pump/side/circuit is operated/cleaned is recorded in the **Shift Summary** narrative, not by marking L/C/R. See `usadebusk-equipment` for left/center/right assembly identity.
+- Support # — hours
+- Crew Truck(s) — ID + hours
+- Materials/Equipment — freeform (e.g., 4×3 diesel pump — hours)
+- Filtration/Filters — hours
+- Pigs — types + quantities
+
+**Labor hours:**
+- DS Supervisor — name + hours
+- NS Supervisor — name + hours
+- Operators — name + hours (up to 6 slots)
+
+**Task hours:**
+- Rig In
+- Rig Out
+- Rig Over
+- Pigging
+- Plant Down Time
+- Third Party Services — description + hours
+
+**Consumables:**
+- Per Diem — count (people × shifts)
+- DEF — count (shifts)
+
+**Shift Summary** — freeform chronological narrative of shift activity, **including which pump/side/circuit(s) were operated/cleaned this shift**. Example: "7am–9am: Pig (2 hrs) Polish 30 passes. 9am–12pm: Smart Pig (3 hrs). 12pm–2pm: Stand-by (2 hrs) wait for approval. 2pm–7pm: Rig-out (5 hrs)."
+
+**Sign-off:**
+- Customer name + signature
+- Supervisor name + signature
+- Date
 
 ⚠️ **Unsigned receipts = dispute risk. Flag immediately.**
 
@@ -43,13 +72,13 @@ When processing service receipts for a job:
 | Line Item | Category | Hours/Qty | Rate Basis |
 |---|---|---|---|
 | TriMax Pumper | Equipment | N hrs | Hourly task-based |
-| Filter Press | Equipment | N hrs | Pumping / non-pumping |
+| Filter Press | Equipment | N hrs | Pumping / non-pumping (pumping = pigging/smart pigging; non-pumping = rigging/stand-by) |
 | 4×3 Pump | Equipment | N hrs | Hourly |
 | Support Unit | Equipment | N hrs | Hourly |
 | Crew Truck | Equipment | N hrs | Hourly |
-| DS Supervisor | Labor | N hrs | Day Rate |
-| NS Supervisor | Labor | N hrs | Day Rate |
-| Operator | Labor | N hrs | Day Rate |
+| DS Supervisor | Labor | N hrs | Hourly |
+| NS Supervisor | Labor | N hrs | Hourly |
+| Operator | Labor | N hrs | Hourly |
 | Per Diem | Labor | N count | Daily |
 | DEF | Materials | N shifts | Per shift |
 | Pigs | Materials | qty/type | Unit rate |

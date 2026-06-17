@@ -8,7 +8,7 @@ description: Load this skill when the task involves equipment specifications, ha
 ## TriMax Pumper Unit
 USADeBusk's proprietary trailer-mounted pigging pumper. High-volume / low-pressure system — pigs are propelled by flow, not pressure alone. Not a jetting unit.
 
-**Unit architecture — TRIPLE:** One TriMax trailer contains 3 independent pumping assemblies. Each assembly has its own engine, gearbox, pump, and valve manifold. All three share ONE clean tank (3,000 gal) and ONE dirty tank (2,000 gal). Three operator stations in the control cab — one per assembly. Each assembly cleans one circuit independently: direction, flow state, and progress are set per assembly. Scope determines how many of the 3 assemblies are used; unused assemblies sit idle.
+**Unit architecture — TRIPLE:** One TriMax trailer contains 3 independent pumping assemblies. Each assembly has its own engine, gearbox, pump, and valve manifold. All three share ONE clean tank (3,000 gal) and ONE dirty tank (2,000 gal). Three operator stations in the control cab — one per assembly. Each assembly cleans one circuit independently: direction, flow state, and progress are set per assembly. Scope determines how many of the 3 assemblies are used; unused assemblies sit idle. The three pumping assemblies, left → right: **left (pump 1), center (pump 2), right (pump 3)**. Referenced as left/center/right side when identifying which assembly/circuit is in use.
 
 **Physical layout (left → right):**
 Control cab (3 operator stations) | Dirty tank (2,000 gal, shared) | Clean tank (3,000 gal, shared) | 3× pump/engine assemblies
