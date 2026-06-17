@@ -17,7 +17,7 @@ description: Load this skill for any task involving USADeBusk work — proposals
 ## Brand Standards
 | Element | Spec |
 |---|---|
-| Font | Arial throughout |
+| Font | Helvetica (Arial acceptable as fallback for DOCX generation) |
 | H1 | 13pt bold `#222222`, gold `#FCC30A` bottom border |
 | H2 | 11pt bold `#FCC30A` |
 | Body | 10pt `#555555` |
