@@ -16,7 +16,9 @@ description: Load this skill when the task involves building a proposal, analyzi
 6. **Travel distance** → mob/demob mileage
 7. **Crew size** → labor and per diem
 
-*Metallurgy does not significantly change the estimate. Customer handles soda ash.*
+*Metallurgy does not significantly change the **cost estimate** (customer handles
+soda ash). This does not apply to SOP, safety, or chemistry compatibility —
+confirm metallurgy separately for those purposes.*
 
 ---
 
@@ -81,6 +83,12 @@ mob/demob entry governs how mob/demob occupies the schedule; it does not set pri
 **Filter Press billing:** Two rates
 - Pumping rate: TriMax actively pigging
 - Non-pumping/stand-by rate: rig-in, rig-out, stand-by
+
+**Stand-by applies to two rate lines only — TriMax Pumper and Filter Press.**
+Triggered when the project is not actively moving forward (rig-in, rig-out,
+waiting) and USADeBusk cannot rig-in, pig, or smart-pig. All other resources
+(Support equipment, Labor, Per Diem, Materials, Mob/Demob) bill unchanged
+regardless of stand-by status.
 
 **Third-party markup:** 10% baseline; contract-dependent. Confirm applicable contract markup before finalizing any proposal or invoice; some facilities contract as low as 5%.
 
