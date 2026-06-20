@@ -50,6 +50,8 @@ Always load `usadebusk-core` for any USADeBusk task, plus the relevant domain sk
 - Default effort: `medium` for routine tasks. Use `high` for complex estimating,
   SOP drafting, or multi-step field execution work.
 - Do not use `xhigh` unless Jesse explicitly requests it.
+- Never reuse rates from a prior job without explicit confirmation. Canonical
+  rate-discipline rule lives in `usadebusk-estimating` — do not duplicate here.
 
 ## Goal-Driven Execution
 Transform imperative tasks into verifiable goals before starting.

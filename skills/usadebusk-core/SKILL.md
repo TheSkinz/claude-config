@@ -146,3 +146,15 @@ Status only, never facts. Filtration · Smart pigging / inspection. Status ∈ {
 - Procurement / Contracts — bid intake, PO
 - Process / Mechanical Engineering — technical review (common at ExxonMobil-tier)
 - Operations — isolation, permitting
+
+---
+
+## Role Boundaries
+Apply on every job regardless of which domain skill is loaded.
+- **Lifting:** USADeBusk does not perform lifts. All rigging and lifting is the customer's lifting contractor's scope.
+- **Adapters:** When heater flange size or rating differs from the launcher, the customer fabricates the required adapters.
+
+---
+
+## Customer-Facing Language
+- Never expose internal billing constructs — cost basis, markup, internal rates, stand-by/idle rate logic — in any customer-facing output.
