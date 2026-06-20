@@ -119,3 +119,21 @@ Control cab (3 operator stations) | Dirty tank (2,000 gal, shared) | Clean tank 
 - Filtration scales conditionally: 2× filter presses + 2× 4×3 pumps when customer requires it AND a 2nd press is available; otherwise 1× shared filter press + 1× shared 4×3 pump serving both TriMax units
 - When shared: T-connections with valve manifolds on both sides link both dirty-tank outlets to shared pump suction; clean filtrate returns to respective clean tanks
 - Each assembly runs its own circuit fully independently — direction, flow state, and progress are set per assembly. No cross-assembly direction constraint.
+
+---
+
+## Double Pumper
+
+Same custom design as the TriMax on a single 48' trailer, with **two** of each major component (engine, gearbox, pump, valve manifold) instead of three. Two independent pump assemblies: **left = pump 1, right = pump 2. No center.** Cleans two circuits simultaneously. Documented by reference to the TriMax above — not a separate from-scratch spec.
+
+**Distinguishing invariant:** assembly count (two vs. three) and the presence/absence of a center assembly. This separates the double pumper from both the TriMax (three assemblies, L/C/R = 1/2/3, one trailer) and the Second TriMax (two trailers, six assemblies total).
+
+**Notation — two separate axes, do not conflate:**
+- **L/C/R** = which pump assembly (physical trailer position). The double pumper has L and R only; no C.
+- **Red/Blue** = the two ports on a given pump side, routing to the launchers at either end of that side's circuit. Blue port → blue launcher → convection + radiant closed-loop circuit → red launcher → red port → open-top clean tank → recycled; reversible via directional valves.
+
+**Guardrail A — don't overwrite:** When a job states it uses the double pumper, do NOT substitute the TriMax. "Double pumper" is accepted terminology for this specific unit — leave it as written.
+
+**Guardrail B — don't invent (the higher-volume risk):** NEVER infer the double pumper from heater data. Pass count, circuit count, and two-pass geometry do NOT imply a double pumper. The TriMax is the default mobilized unit for essentially all jobs INCLUDING two-pass heaters — one pump side simply goes unused. The double pumper is used only when explicitly stated for that specific job, and is so rare neither division documents it elsewhere. It is never a card field (see the Heater Card Schema in `usadebusk-core`).
+
+**Terminology:** "double pumper" (this two-assembly unit) is accepted. "dual-pumper" remains **banned** — it mischaracterizes the three-assembly TriMax as two-assembly and customers misread it as 2-circuit-max. Adding the double pumper fills a real registry slot; it does not lift the dual-pumper ban. The three terms are distinct: **TriMax/Triple** (3 assemblies, 1 trailer) · **double pumper** (2 assemblies, 1 trailer) · **Second TriMax / 2× TriMax** (2 trailers, 6 assemblies).

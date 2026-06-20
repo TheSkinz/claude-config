@@ -30,7 +30,7 @@ confirm metallurgy separately for those purposes.*
 
 **Pigging duration benchmark:** ~100 ft/hour per pass (nominal fouling)
 - 3,000 ft coil = ~30 pigging hours
-- **Reduce the ft/hour rate (more hours required) for:** harder fouling (coker/crude), pitch presence, tube restrictions, first-time clean with no prior data
+- **Reduce the ft/hour rate (more hours required) for:** harder fouling (coker/crude), pitch presence, tube restrictions, plug-header / mule-ear return bends (harder pig traversal — read `Return bend type` from the heater card), first-time clean with no prior data
 - Adjust using: prior cleaning data for same heater, job walk observations, loop configuration
 
 **Rig-In / Rig-Out:** Fixed events. Duration varies by pass count and access complexity. Proposal-generation defaults: Rig-In 6 hrs, Rig-Out 6 hrs, Smart Pig 4 hrs (when applicable) — adjust per pass count and access.
@@ -204,6 +204,8 @@ Every USADeBusk proposal follows a 12–16 page structure. Reproduce this sectio
 - Standard disclaimer: "The projected times and durations are estimated based on our extensive experience and the coil data provided. However, please be aware that the actual project duration may vary due to factors such as deposit hardness, location, composition, and thickness."
 
 ### Section 5 — Technical Data
+Read heater facts from the heater card; field meanings defer to the Heater Card Schema in `usadebusk-core`. This table carries **facts only** — filtration and smart pigging are customer decisions, read from the card's Job Options (status), never reproduced as a spec row here.
+
 One technical summary table per heater, titled `Furnace: [Heater Tag & Name]`:
 
 | Item | Convection Section | Radiant Section |

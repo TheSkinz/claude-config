@@ -61,9 +61,9 @@ Fired heater tubes accumulate petroleum coke (carbon-rich thermal cracking bypro
 | Kicksolve | Chemical additive for mobilizing hardened residual product/pitch |
 | Ticket Breakdown | Per-job Excel file: all billable resources, durations, rates |
 | Service Receipt | Handwritten daily field doc completed by PM per 12-hour shift |
-| TriMax (Triple) / second TriMax | Naming lock. The pumper unit is a "Triple" (3 independent assemblies); a 2× deployment is a "second TriMax." Never "dual-pumper." Dead string: 'dual-pumper' / 'dual pumper' / 'Dual pumper' — flag and correct on sight. Equipment specs live in usadebusk-equipment. |
+| TriMax (Triple) / second TriMax / double pumper | Naming lock. The standard pumper unit is a "Triple" (3 independent assemblies); a 2× deployment is a "second TriMax." The "double pumper" is a distinct, rare unit — single trailer, 2 assemblies, no center. Never "dual-pumper." Dead string: 'dual-pumper' / 'dual pumper' / 'Dual pumper' — flag and correct on sight. Equipment specs live in usadebusk-equipment. |
 
-⚠️ TERMINOLOGY FLAG: "Triple" and "second TriMax" are canonical. Never write "dual-pumper" in any document, internal or customer-facing — customers misread it as a pumper limited to two circuits. Flag and correct on sight.
+⚠️ TERMINOLOGY FLAG: "Triple" and "second TriMax" are canonical. "Double pumper" is accepted ONLY for the specific 2-assembly single-trailer unit (see usadebusk-equipment) — never as a synonym for the TriMax. Never write "dual-pumper" in any document, internal or customer-facing — customers misread it as a pumper limited to two circuits. The near-homophone collision is deliberate to guard against: double pumper (real, rare) ≠ dual-pumper (banned). Flag and correct on sight.
 
 ---
 
@@ -98,10 +98,46 @@ When reasoning about coil topology — serpentine reversal, conv → crossover �
 
 ### Metallurgy
 - **Carbon steel:** Standard — no modification
-- **Stainless steel:** Requires soda ash passivation after mechanical cleaning. Customer typically provides soda ash. pH target ≥ 10.0 throughout circulation. 1–2 ft/s velocity. 4–6 hours. Final flush to neutral. Firewater prohibited in stainless coils.
+- **Stainless steel:** Requires soda ash passivation after mechanical cleaning — passivation and soda ash mixing are customer-performed. Customer typically provides the soda ash. pH target ≥ 10.0 throughout circulation; final flush to neutral. Firewater is avoided by default due to chloride content, but may be permitted if the facility has tested its hydrant supply and confirmed acceptable chloride levels.
 
 ### Key Job Variables
 Pass/circuit count · Tube ID (conv and rad) · Flange size & rating · Total footage per pass · Tube arrangement (H vs V) · Fouling type · Metallurgy · Loop configuration
+
+---
+
+## Heater Card Schema
+
+The heater card is the canonical structured record for one fired heater and the single source of truth for heater facts. Downstream skills read these as fields rather than inferring them: `usadebusk-estimating`, `usadebusk-sop`, and `usadebusk-vault-ingest` defer to this schema for what fields mean and which behavior they gate, and none of them redefine it. Card instances live in the vault under `02-facilities/...`; blank scaffolds live in `templates/`.
+
+### Fact / decision wall (core principle)
+- **Facts** about the heater — tube geometry, metallurgy, flange details, return-bend type, water supply — live in the technical tables below. A fact is a heater property a drawing or field measurement establishes.
+- **Decisions** the customer makes — filtration, smart pigging/inspection — live ONLY in the quarantined Job Options table, recorded as status (Optional / Elected / Declined / TBD), never as a spec. A decision placed in a fact table causes estimating and SOP errors downstream.
+- **Pumping-unit type is NOT a card field.** It is a per-job dispatch decision, not a heater property — never recorded or inferred on the card. TriMax is the default unit for essentially all jobs; the double pumper is explicit-only (see `usadebusk-equipment`).
+
+### Tube geometry
+One table, one row per distinct pipe ID per section. Add a row only when a section contains more than one pipe ID; default is a single row per section.
+
+| Section | OD (in) | Sched | Wall (in) | ID (in) | Tubes/Coil | Avg Length (ft) | Length/Coil (ft) | Notes |
+|---|---|---|---|---|---|---|---|---|
+
+- `ID` is what pig sizing keys off; `OD` + `Sched` are how ID is verified against a drawing. Record all three when available — never drop OD/Sched.
+- `Tubes/Coil` = tube count in ONE pass of that geometry (one coil = one pass). Pass count is not a column here — the config rollup carries it.
+
+### Config rollup (estimating reference)
+| Config | Section | Coils | Pipe IDs (in) | Tubes | Total Length |
+|---|---|---|---|---|---|
+| 1 Pass | | 1 | | | |
+| N Passes | | N | | | |
+
+- **1 Pass** = one circuit in isolation. **N Passes** = all passes (single-pass values × pass count; Coils = N).
+- Edge case: when passes sharing a pipe ID have unequal tube counts, the single-pass figure is an average, not an exact count — flag it rather than dividing blindly.
+- Total Length (all passes) feeds the cleaning-rate duration estimate.
+
+### Connection info (facts)
+Launcher flange (size / rating# / type, e.g. RFWN) · Receiver flange · Return-bend type (180° U-bend / plug-type "mule ear" header — see `usadebusk-sop` for the distinction) · Water supply source · Max pig OD. Metallurgy (frontmatter + identity) gates NACE/passivation eligibility per the Metallurgy section above; election is still a customer decision recorded in Job Options.
+
+### Job Options (quarantined decisions)
+Status only, never facts. Filtration · Smart pigging / inspection. Status ∈ {Optional, Elected, Declined, TBD}. Estimating and SOP read election status here; they never read a decision from a fact table.
 
 ---
 

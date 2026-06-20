@@ -115,14 +115,59 @@ Filter Press (100 PSI) → 3" Camlock → Clean Tank
 **Variant A — Standard (Carbon Steel)**
 Standard pigging procedure. Fresh condensate or equivalent. No passivation.
 
-**Variant B — Stainless Steel**
-Same mechanical procedure plus:
-- Soda ash solution circulation post-cleaning
+**Variant B — Stainless Steel** *(Eligible only when `metallurgy: stainless` on the heater card — eligibility, not automatic inclusion. Customer election determines final inclusion, two-stage, same shape as filtration. No stainless evidence → omit this content entirely; do not downplay or hedge, omit. Stainless is rare in this industry.)*
+
+Same mechanical procedure plus customer-performed passivation:
+- Soda ash solution circulation post-cleaning — passivation and soda ash mixing are customer-performed (customer typically provides the soda ash)
 - pH monitoring throughout (target ≥ 10.0)
 - Nitrogen purge — confirm source (customer or USADeBusk)
 - Final rinse to neutral pH
 - Reference NACE SP0170 or applicable customer spec
-- **Firewater prohibited.** Confirm water source before writing.
+- Firewater is avoided by default due to chloride content, but may be permitted if the facility has tested its hydrant supply and confirmed acceptable chloride levels. Confirm water source before writing.
+
+---
+
+## Return Bend Types & Plug Headers
+Read `Return bend type` from the heater card.
+- **180° U-bend** — cast return bend, standard; pig reverses direction normally.
+- **Plug header** — general (customer-facing) term for a box header with removable plugs at tube ends. Older design.
+  - **Mule ear** — a specific plug-header subtype where tube-to-tube pig traversal is harder than a standard U-bend. Use "mule ear" ONLY when that subtype actually applies; otherwise say "plug header."
+
+Plug-header geometry can slow or hang a pig at the tube-to-tube transition; treat its presence as a cleaning-duration factor on data-less heaters (see `usadebusk-estimating`). A benign hang-up at a plug header is a foam-assist situation handled by the module below — it is NOT a stuck/lodged pig. This module stays completely separate from the lodged-pig procedure (`SOP-OPS-LODGE-001`) and must never cross-reference it in customer-facing output.
+
+---
+
+## Strategy for Addressing Plug Header ("Mule Ear") Complications
+
+Optional module — include where the heater coil includes plug-type headers at tube ends.
+
+### Background
+Tube ends within affected sections of this coil terminate in plug-type headers, commonly referred to in the field as mule ear plug headers, rather than welded return bends. During normal pig travel, a pig can become misaligned within a plug header area and stop advancing while circuit flow remains fully established, with flow passing around the stalled pig rather than through it. This is treated as a hang-up or misalignment condition, distinct from a stuck pig condition, since flow and pressure response remain available throughout.
+
+Hang-up frequency depends on plug header type, plug condition, and the degree of internal fouling at that location, and typically decreases as the tube run is progressively cleaned over the course of the project.
+
+### Response Procedure
+
+**Initial Response**
+1. Confirm continued flow through the circuit and monitor pressure response.
+2. Switch flow direction as needed and attempt to reverse the pig out of the plug header area.
+3. Use controlled pump output increases to bump the pig in both directions and attempt to restore movement.
+
+**Foam Assist Setup**
+4. If controlled reversal and bumping do not free the pig, shut down flow and depressurize the system per standard procedure.
+5. Open the launching end pigging spool from the original pig run.
+6. Insert a foam pusher pig into the same launching end pigging spool.
+7. Close and secure the pigging spool, then re-establish flow in the original direction of travel.
+
+**Foam Assist Execution**
+8. Run the foam pusher pig through the circuit until it contacts and dislodges the hung pig.
+9. Continue running to the receiving end pigging spool and monitor for foam pig and/or hard pig arrival.
+10. If the foam pig arrives but the hard pig does not, shut down flow and depressurize the system, remove the foam pig, close and secure the receiving end pigging spool, then return to the launching end pigging spool and repeat the foam pig assist process.
+11. Reuse the foam pig only if it remains in acceptable condition; otherwise, insert a new foam pig.
+
+**Resolution and Documentation**
+12. Continue the sequence until the hard pig is recovered at the receiving end pigging spool, or until further action is directed by supervision.
+13. Document the event, including pig size, direction of travel, pressure/flow response, reversal attempts, foam pig assist attempts, and final pig recovery.
 
 ---
 
@@ -136,7 +181,7 @@ Do not generate until confirmed:
 6. Inlet/outlet flange size and rating
 7. Tube arrangement
 8. **Tube metallurgy** — determines entire SOP variant. Never assume.
-9. **Water source** — firewater prohibited in stainless. Never assume.
+9. **Water source** — on stainless, firewater is avoided by default (chloride), permitted only if the facility has tested its hydrant supply and confirmed acceptable chloride levels. Never assume.
 10. Launcher access and elevation
 11. Jumper spool requirements
 12. Applicable standards (NACE SP0170, customer spec)
@@ -160,9 +205,11 @@ When Jesse requests a PFD, produce:
 
 **Header:** Document ref (PFD-DCK-[job#]-REV[X]), title, subtitle: CLOSED-LOOP · [direction] · FLOW REVERSIBLE, client, contractor, date
 
+**Effluent handling — read election from the heater card Job Options; do not assume filtration is in the loop.** Default is drain to coke pit / oily water sewer, typically with a continuous water source (e.g. fire hydrant). Filtration is optional and customer-elected; billed only when the filter press is deployed. Commonly elected on stainless/passivation jobs to conserve limited low-chloride water and soda ash, but not automatic even then — some facilities test their water source, confirm acceptable chloride levels, and decline. The facility decides. Include the P2 FILTRATION process below only when filtration is Elected.
+
 **Two-process layout:**
 - P1 PIGGING: TriMax → Launcher → Heater Circuit → Receiver → Diverter → Clean/Dirty Tank
-- P2 FILTRATION: Dirty Tank → 4×3 Pump → Filter Press → Clean Tank
+- P2 FILTRATION *(only when filtration is Elected — otherwise effluent drains to coke pit / oily water sewer)*: Dirty Tank → 4×3 Pump → Filter Press → Clean Tank
 
 **Equipment blocks (L to R):** Fired Heater | TriMax Pumper | 4×3 Pump | Filter Press
 
@@ -190,5 +237,10 @@ When Jesse requests a PFD, produce:
 ## Behavior Rules
 - Never use generic placeholder language. Every SOP references specific heater tag, circuit layout, and connection details.
 - Never assume metallurgy — determines entire SOP variant.
-- Never assume water source — firewater prohibited in stainless.
+- Never assume water source — on stainless, firewater is avoided by default (chloride) and permitted only on facility-confirmed acceptable chloride levels.
 - Never generate SOP until all required inputs are confirmed.
+
+---
+
+## Lodged / Stuck Pig Procedure — REQUEST-ONLY
+The standalone lodged/stuck-pig removal procedure (`SOP-OPS-LODGE-001`) lives at `references/sop-ops-lodge-001.md`. **Hard suppression gate:** never auto-include it in any estimate or project-specific SOP, and never trigger it from heater-card data (multiple tube sizes, reducers, pass count, plug headers, or anything else). Provide it ONLY on explicit customer or user request — mentioning stuck pigs unprompted spooks facility reps. It stays completely separate from the benign plug-header hang-up module above, which must never cross-reference it in customer-facing output.

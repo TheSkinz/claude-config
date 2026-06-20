@@ -157,8 +157,8 @@ Also extract at heater or scope level:
 - Metallurgy (may be shared across heaters in a scope table)
 - Configuration (Horizontal / Vertical Cylindrical / Cabin)
 - Launcher sizes
-- Filtration required (Yes/No)
-- Inspection (Yes/No)
+- Filtration — record as election **status** in the Job Options table (Elected / Declined / Optional / TBD), never as a spec row
+- Smart pigging / inspection — record as election **status** in the Job Options table (Elected / Declined / Optional / TBD)
 
 ### Step 4 — Extract execution plan hours (per-heater)
 
@@ -240,14 +240,28 @@ tags: []
 | Configuration | |
 | Metallurgy    | |
 | Launchers     | |
-| Filtration    | Yes / No |
-| Inspection    | Yes / No |
 
 ## Tube Geometry
-| Section    | Coils | OD | Sched | Wall | ID | Tubes/Coil | Tube Length | Ft/Section |
-|------------|-------|----|-------|------|----|------------|-------------|------------|
-| Convection |       |    |       |      |    |            |             |            |
-| Radiant    |       |    |       |      |    |            |             |            |
+*One row per distinct pipe ID per section; default one row per section, add rows only when a section has multiple pipe IDs. ID drives pig sizing; OD + Sched verify ID against the drawing. Tubes/Coil = tubes in one pass of that geometry — pass count lives in the Config Rollup, not here. Schema defined in usadebusk-core (Heater Card Schema).*
+
+| Section    | OD | Sched | Wall | ID | Tubes/Coil | Avg Length | Length/Coil |
+|------------|----|-------|------|----|------------|------------|-------------|
+| Convection |    |       |      |    |            |            |             |
+| Radiant    |    |       |      |    |            |            |             |
+
+## Config Rollup
+| Config   | Section | Coils | Pipe IDs | Tubes | Total Length |
+|----------|---------|-------|----------|-------|--------------|
+| 1 Pass   |         | 1     |          |       |              |
+| N Passes |         |       |          |       |              |
+
+## Job Options — Customer Decisions (Quarantined)
+> Status only — never facts. A decision recorded in a spec table causes estimating and SOP errors downstream.
+
+| Option                     | Status (Optional / Elected / Declined / TBD) | Vendor / Notes |
+|----------------------------|----------------------------------------------|----------------|
+| Filtration                 |                                              |                |
+| Smart pigging / inspection |                                              |                |
 
 ## Bid History
 | DSP#  | Date | Scope | Contract Type | Value | Status |
