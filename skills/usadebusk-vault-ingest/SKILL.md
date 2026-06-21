@@ -102,24 +102,9 @@ Rules:
 
 ---
 
-## Document Type Detection
-
-**Detection runs in this exact order. Stop at first match.**
-
-| Priority | Type | Detection Signals |
-|----------|------|-------------------|
-| 1 | Job Report | `USA\d{5}` or `CND\d{5}` in filename OR first 500 words — takes precedence even if DSP# also present |
-| 2 | DSP / Proposal | DSP# in filename or content AND "Requested Service" AND "Technical Info/Data" — all three required |
-| 3 | USADeBusk Companion Doc | Formal USADeBusk doc number (SOP-*, DCK-*, CO-*) OR authored by USADeBusk/DeBusk Services Group; client + unit tag present |
-| 4 | Client Facility Doc | Client-authored; facility/site signals present; procedural or policy content (permits, access, safety, contractor requirements); no unit tag, no USA#, no DSP# |
-| 5 | Facility Overview | Client + city/state, no unit tag, no DSP#, no job number, not procedural in nature |
-| 6 | Heater Card | Unit tag + tube geometry table, no DSP#, no job number |
-| 7 | Knowledge/Reference | No client or job reference; technical content only |
-| 8 | Unresolved | No confident match |
-
-**Why job number takes priority:** Job reports frequently reference DSP numbers and contain technical language. Checking for USA##### first prevents misclassification of job reports as DSPs.
-
-**Distinguishing Client Facility Doc from Facility Overview:** Facility Overview is a USADeBusk-maintained summary card. Client Facility Docs are external documents — look for client letterhead, client document numbers, or procedural/policy language as the differentiator.
+## Document Classification & Routing
+For signal detection, priority order, and destination paths for all eight document types,
+follow `references/document-routing.md`. The `doc_type` enum lives in the Frontmatter Template below.
 
 ---
 
@@ -320,51 +305,6 @@ For each identified heater:
 - Append a new `### USA##### — Month Year` subsection under `## Field Notes` with actuals
 - Do not modify Pre-Execution Estimate subsections
 - Do not alter Tube Geometry or Overview unless new data contradicts existing (flag per conflict detection rules above)
-
----
-
-## Routing Inference Logic
-
-Run in this exact order. Stop at first confident match.
-
-### Step 1 — Job number match (highest priority)
-Pattern: `USA\d{5}` or `CND\d{5}` in filename or first 500 words
-→ `03-jobs/[Client]/USA#####.md` or `03-jobs/[Client]/CND#####.md`
-→ Also update relevant heater cards per job report ingestion logic
-→ Classify as job report even if DSP# also present in document
-
-### Step 2 — DSP detection
-Signals: DSP# AND "Requested Service" AND "Technical Info/Data" — all three required
-→ Dissolve into heater cards per DSP ingestion logic above
-
-### Step 3 — USADeBusk companion document
-Signals: formal USADeBusk doc number (SOP-*, DCK-*, CO-*) OR authored by USADeBusk/DeBusk Services Group; client + unit tag present; no USA#, no DSP# triggering full DSP logic
-→ `02-facilities/[Client]/[City-State]/[existing-unit-folder]/[doc-name].md`
-→ Use the document number as filename (e.g. `SOP-DCK-F802-001.md`, `CO-USA26022-001.md`)
-→ If unit subfolder does not exist, create automatically for known clients
-→ doc_type: `sop`, `change-order`, `pre-job-package`, or `other` as appropriate
-
-### Step 4 — Client facility document
-Signals: client-authored (client letterhead or client doc number format); facility/site signals present; procedural or policy content (permits, access requirements, safety classifications, contractor requirements, site-specific policies); no unit tag, no USA#, no DSP#
-→ `02-facilities/[Client]/[City-State]/[normalized-doc-name].md`
-→ Normalize filename: strip client doc numbers, use descriptive slug (e.g. `Baytown-Contractor-Safety-Requirements.md`)
-→ Do NOT route to the facility overview file — write as a companion file at the facility folder level
-→ doc_type: `procedure`, `policy`, or `other` as appropriate
-
-### Step 5 — Heater/unit match (standalone)
-Signals: unit tag, tube geometry data, no DSP#, no job number
-→ `02-facilities/[Client]/[City-State]/Unit-[UnitID]-[Service]/[UnitID].md`
-
-### Step 6 — Facility match (no unit)
-Signals: client + city/state, no unit tag, no DSP#, no job number, not procedural in nature
-→ `02-facilities/[Client]/[City-State]/[Client-City-State].md`
-
-### Step 7 — Knowledge/reference
-Signals: no client or job reference; technical content
-→ `04-knowledge/[inferred-subcategory]/[filename].md`
-
-### Step 8 — Unresolved
-→ `00-inbox/[original-filename].md` with `routing: unresolved`
 
 ---
 
