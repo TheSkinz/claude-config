@@ -54,8 +54,9 @@ Diverter → Clean Tank (clear) / Dirty Tank (cloudy)
 **Filtration loop (concurrent):**
 ```
 Dirty Tank → 3" Camlock → 4×3 Pump → 3" Camlock →
-Filter Press (100 PSI) → 3" Camlock → Clean Tank
+Filter Press → 3" Camlock → Clean Tank
 ```
+*Hose/connection specs (3" Camlock) and filter-press operating pressure (100 PSI) are canonical in usadebusk-equipment.*
 *Filtration operates independently — does not influence coil pressure or pig travel.*
 
 ---
@@ -103,10 +104,10 @@ Filter Press (100 PSI) → 3" Camlock → Clean Tank
 |---|---|
 | Cleaning Medium | Fresh condensate / demineralized water / BFW — confirm per metallurgy |
 | System Operating Pressure | 100–200 PSI nominal; 150–400 PSI hard fouling |
-| Maximum Pig OD | Tube ID + 0.250" |
+| Maximum Pig OD | Tube ID + 0.250" max (canonical: usadebusk-equipment) |
 | Pig Sizing Increment | 1/8" per successful pass |
 | Completion Criterion | Effluent time ≤ 3–5 seconds; effluent clear |
-| Maximum System Pressure | 600 PSI absolute; over-pressure checklist required above 500 PSI |
+| Maximum System Pressure | 600 PSI absolute; over-pressure checklist above 500 PSI (canonical: usadebusk-equipment) |
 
 ---
 
