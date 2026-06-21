@@ -15,6 +15,8 @@ description: Load this skill for any task involving USADeBusk work — proposals
 - **Third-party markup:** 10% baseline; contract-dependent.
 
 ## Brand Standards
+*Canonical authority for all USADeBusk brand, font, type-scale, and color specs. Other surfaces (vault formatting standard, context files, system prompts) defer here.*
+
 | Element | Spec |
 |---|---|
 | Font | Helvetica (Arial acceptable as fallback for DOCX generation) |
