@@ -16,3 +16,11 @@ todos/
 plugins/marketplaces/
 plugins/
 .last-cleanup
+.claude/
+.last-update-result.json
+daemon/
+jobs/
+mcp-needs-auth-cache.json
+paste-cache/
+settings.local.json
+tasks/
