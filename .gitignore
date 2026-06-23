@@ -17,6 +17,7 @@ plugins/marketplaces/
 plugins/
 .last-cleanup
 .claude/
+.agents/
 .last-update-result.json
 daemon/
 jobs/
