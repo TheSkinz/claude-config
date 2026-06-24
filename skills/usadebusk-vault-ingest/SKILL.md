@@ -70,9 +70,8 @@ obsidian-usadebusk/
 ├── 02-facilities/     # facility-level docs
 │   └── [Client]/
 │       └── [City-State]/
-│           ├── [Client-City-State].md        # facility overview
-│           └── Unit-[UnitID]-[Service]/      # per-heater subfolder
-│               └── [UnitID].md              # heater card
+│           ├── _facility.md              # site-level facts (underscore sorts first)
+│           └── [HeaterTag].md            # heater card — flat, no per-heater subfolders
 ├── 03-jobs/           # job notes
 │   └── [Client]/
 │       └── USA#####.md                      # one file per job number (US jobs)
@@ -130,17 +129,18 @@ Scan Technical Info/Data section. Each labeled coil data table = one heater card
 
 ### Step 3 — Extract per-heater technical data
 For each heater, extract into the Tube Geometry table:
-- Section (Convection / Radiant)
-- Total coils
+- Section (Convection / Radiant — one row per physical segment in flow order)
+- Arrangement (Convection defaults to Horizontal; Radiant has NO default — state explicitly or `(not recorded)`)
+- Metallurgy — PER-SECTION, not card-level (may be shared across heaters in a scope table, but record on each section row)
 - Pipe OD, Schedule, Wall thickness, Pipe ID
-- Tubes per coil
-- Tube length
-- Ft per section / total footage
-- Multiple rows per section if mixed IDs present (common on Vac heaters)
+- Tubes per circuit
+- Avg tube length
+- Length per circuit
+- Return Bend Type (per-section)
+- Multiple rows per section if mixed IDs present (common on Vac heaters), labeled "segment N of M"
 
 Also extract at heater or scope level:
-- Metallurgy (may be shared across heaters in a scope table)
-- Configuration (Horizontal / Vertical Cylindrical / Cabin)
+- Configuration (Looped-at-outlets / Individual-Passes / etc.)
 - Launcher sizes
 - Filtration — record as election **status** in the Job Options table (Elected / Declined / Optional / TBD), never as a spec row
 - Smart pigging / inspection — record as election **status** in the Job Options table (Elected / Declined / Optional / TBD)
@@ -172,10 +172,10 @@ DSPs sometimes use inconsistent unit tags across pages (e.g. "210-1401A" on cove
 
 ### Step 6 — Route to heater cards
 For each heater:
-- Target: `02-facilities/[Client]/[City-State]/Unit-[UnitID]-[Service]/[UnitID].md`
+- Target: `02-facilities/[Client]/[City-State]/[HeaterTag].md` (flat — no per-heater subfolders)
 - If card does not exist: create full card using heater card template below
 - If card exists: see Tube Geometry Conflict Detection below
-- If unit subfolder does not exist: create it automatically for known clients
+- If site folder (`[Client]/[City-State]/`) does not exist: create it automatically for known clients
 
 ---
 
@@ -183,7 +183,7 @@ For each heater:
 
 When a heater card already exists and incoming DSP data differs from existing data:
 
-1. Compare each Tube Geometry field: OD, Sched, Wall, ID, Tubes/Coil, Tube Length, Ft/Section
+1. Compare each Tube Geometry field: Arrangement, Metallurgy, OD, Sched, Wall, ID, Tubes/Circuit, Avg Length, Length/Circuit, Return Bend Type
 2. If incoming value matches existing → no action
 3. If incoming value differs from existing → flag in dry-run output:
    ```
@@ -200,86 +200,145 @@ When a heater card already exists and incoming DSP data differs from existing da
 
 ## Heater Card Template
 
+<!-- Derived from 04-knowledge/_canonical-heater-card.md. Keep in sync. -->
+
 ```markdown
 ---
-title: [UnitID] — [Client] [City-State]
-client: [client]
-facility: [City-State]
-unit_id: [canonical tag]
-aliases: [variant tags from DSP if different]
-service: [crude | coker | vac | reformer | hydrotreater | other]
-configuration: [Horizontal | Vertical Cylindrical | Cabin]
-metallurgy: [e.g. SA-234/SA-106 Gr. B | Carbon Steel | Stainless]
-date_created: [YYYY-MM-DD]
-last_updated: [YYYY-MM-DD]
-tags: []
+type: heater
+heater-id: <UNIT>-<TAG>-<ShortName>
+heater-tag: <e.g. F-802, 210-1401A>
+unit: <e.g. PS8, Unit 210, HU9 — omit if not applicable>
+facility: <Client>-<City>-<ST>
+  # ↑ JOIN KEY — must match facility-id in this site's _facility.md
+client: <Client name>
+heater-type: <crude | vacuum | reboiler | other>
+service: <e.g. Crude Heater, Splitter Reboiler — optional if heater-type covers it>
+configuration: <e.g. Looped-at-Radiant-outlet-flanges, Individual-Passes>
+last-updated: <YYYY-MM-DD>
+tags: [heater-card, <Client>, <heater-type>]
 ---
 
-## Overview
-| Field         | Value |
-|---------------|-------|
-| Client        | |
-| Facility      | |
-| Unit ID       | |
-| Service       | |
+# <Unit/Tag> <ShortName> — <Client> <City>, <ST>
+
+<!-- Include stainless warning block only if any section's metallurgy requires passivation. Omit entirely on carbon-steel-only heaters. -->
+
+---
+
+## Identity
+
+<!-- Card-level facts only. Per-section fields (metallurgy, return bend type) do NOT belong here. -->
+
+| Field | Value |
+|---|---|
+| Client | |
+| Facility | |
+| Unit ID | |
+| Heater type | |
 | Configuration | |
-| Metallurgy    | |
-| Launchers     | |
+
+---
 
 ## Tube Geometry
-*One row per distinct pipe ID per section; default one row per section, add rows only when a section has multiple pipe IDs. ID drives pig sizing; OD + Sched verify ID against the drawing. Tubes/Coil = tubes in one pass of that geometry — pass count lives in the Config Rollup, not here. Schema defined in usadebusk-core (Heater Card Schema).*
 
-| Section    | OD | Sched | Wall | ID | Tubes/Coil | Avg Length | Length/Coil |
-|------------|----|-------|------|----|------------|------------|-------------|
-| Convection |    |       |      |    |            |            |             |
-| Radiant    |    |       |      |    |            |            |             |
+<!-- Per-section: metallurgy and return bend type — do not promote to Identity. -->
+<!-- Arrangement: Convection defaults Horizontal. Radiant has NO default — state explicitly. -->
+<!-- "(not recorded)" is valid — never leave blank, make the gap explicit. -->
 
-## Config Rollup
-| Config   | Section | Coils | Pipe IDs | Tubes | Total Length |
-|----------|---------|-------|----------|-------|--------------|
-| 1 Pass   |         | 1     |          |       |              |
-| N Passes |         |       |          |       |              |
+| Section | Arrangement | Metallurgy | OD (in) | Sched | Wall (in) | ID (in) | Tubes/Circuit | Avg Length (ft) | Length/Circuit (ft) | Return Bend Type | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Convection | Horizontal | | | | | | | | | | |
+| Radiant | | | | | | | | | | | |
 
-## Job Options — Customer Decisions (Quarantined)
-> Status only — never facts. A decision recorded in a spec table causes estimating and SOP errors downstream.
+---
 
-| Option                     | Status (Optional / Elected / Declined / TBD) | Vendor / Notes |
-|----------------------------|----------------------------------------------|----------------|
-| Filtration                 |                                              |                |
-| Smart pigging / inspection |                                              |                |
+## Config Rollup — Estimating Reference
 
-## Bid History
-| DSP#  | Date | Scope | Contract Type | Value | Status |
-|-------|------|-------|---------------|-------|--------|
+<!-- Two rows always present — SCALE (per-unit vs total), not TIME (past vs present). -->
+<!-- Loop arrangement is a permanent physical fact, not a per-job choice. -->
 
-> **Shared pricing note:** When a DSP covers multiple heaters and pricing is not broken out
-> per heater, record the DSP total and note sibling heaters. Example:
-> `Shared with H-29 — DSP total: $145,000 (T&M)`
+| Scale | Section | Pipe ID(s) (in) | Total Tubes | Total Length (ft) | Notes |
+|---|---|---|---|---|---|
+| Per circuit | Convection | | | | |
+| Per circuit | Radiant | | | | |
+| Heater total | Convection | | | | |
+| Heater total | Radiant | | | | |
 
-> **Status note:** Status defaults to `pending` on DSP ingest. Jesse updates manually
-> to `awarded` or `lost`. The skill never sets status beyond `pending`.
+---
 
-## Execution History
-| USA#  | Date | Duration (hrs) | Rigs | PM |
-|-------|------|----------------|------|----|
+## Connection Info (Facts)
+
+<!-- Return bend type and metallurgy are per-section — they live in Tube Geometry, not here. -->
+
+| Field | Value |
+|---|---|
+| Launcher flange | |
+| Receiver flange | |
+| Water supply source | |
+| Max pig OD (in) | |
+
+---
+
+## ⚠ Job Options — Customer Decisions (Quarantined)
+
+> Status only — never facts.
+
+| Option | Status (Optional / Elected / Declined / TBD) | Vendor / Notes |
+|---|---|---|
+| Filtration | | |
+| Smart pigging / inspection | | |
+
+---
+
+## Pig Specifications
+
+| Size | Type | Qty | Unit Cost | Billed As | Source |
+|---|---|---|---|---|---|
+| | | | | | |
+
+---
+
+## Job History
+
+| Job # | Quote | Date | Notes |
+|---|---|---|---|
+| | | | |
+
+---
+
+## Pig History
+
+| Job # | Quote # | Date | Pig sequence used | Est. duration | Actual duration | Notes |
+|---|---|---|---|---|---|---|
+| | | | | | | |
+
+---
+
+## SOPs
+
+---
 
 ## Field Notes
 
-### Pre-Execution Estimate — DSP#[XXXXX]
-**Task Durations:** rig-in X hrs [estimated] / pig X hrs [estimated] / rig-out X hrs [estimated]
-> Note if hours are truck-level shared estimates rather than per-heater
+<!-- Post-execution only — requires a real job number. Pre-job estimates belong in Notes. -->
 
-### [USA#####] — [Month Year]
-**Task Durations:** rig-in X hrs / pig X hrs / rig-out X hrs
-**Pigs Ran:** [sizes and sequence]
-**Obstacles:** [fouling severity, stuck pigs, delays, anything abnormal]
-**Facility Procedures:** [site-specific policies, access requirements, permit conditions worth flagging next bid]
+### <Job # — Month Year>
+
+**Task Durations (actuals):**
+
+**Obstacles:**
+
+**Facility Procedures:**
+
+---
+
+## Notes
+
+<!-- Card-level general info, including pre-job budget estimates from quotes/DSPs. -->
 ```
 
 **Field Notes structure:**
-- DSP ingest creates a `### Pre-Execution Estimate — DSP#XXXXX` subsection with estimated hours
 - Job report ingest APPENDS a new `### USA##### — Month Year` subsection with actuals
-- The Pre-Execution Estimate subsection is never overwritten — it stays as historical record
+- Field Notes entries require a real job number — pre-job estimates from DSPs go in Notes section instead
 - Never delete or modify existing Field Notes subsections
 
 ---
@@ -301,10 +360,9 @@ To identify which heaters a job touches:
 3. If still unresolved, flag and ask Jesse before writing to any heater card
 
 For each identified heater:
-- Append a row to `## Execution History`
+- Append a row to `## Job History` and `## Pig History` as applicable
 - Append a new `### USA##### — Month Year` subsection under `## Field Notes` with actuals
-- Do not modify Pre-Execution Estimate subsections
-- Do not alter Tube Geometry or Overview unless new data contradicts existing (flag per conflict detection rules above)
+- Do not alter Tube Geometry or Identity unless new data contradicts existing (flag per conflict detection rules above)
 
 ---
 
@@ -312,7 +370,7 @@ For each identified heater:
 
 ### Heater cards
 - Update in place per Tube Geometry Conflict Detection rules
-- Append to Bid History, Execution History, Field Notes — never overwrite
+- Append to Job History, Pig History, Field Notes — never overwrite
 
 ### Job cards
 - Append field reports as subsections under `## Field Reports`
@@ -322,7 +380,7 @@ For each identified heater:
 
 ### Revised proposals (DSP# with revision suffix e.g. DSP24021.2)
 - Re-run DSP ingestion logic against existing heater cards
-- Overwrite Bid History row for that DSP# with updated data
+- Overwrite Job History row for that DSP# with updated data
 - Flag any Tube Geometry conflicts per conflict detection rules
 
 ### Known DSP# corrections
@@ -369,12 +427,13 @@ HEATERS IDENTIFIED: H-28, H-29
 TRUCK STRUCTURE: Truck 1 → H-28 + H-29 (shared hours)
 ─────────────────────────────
 HEATER     : H-28
-TARGET PATH: 02-facilities/P66/Ponca-City-OK/Unit-H-28-Coker/H-28.md
+TARGET PATH: 02-facilities/P66/Ponca-City-OK/H-28.md
 STATUS     : new card (will create)
              ⚠ OR: card exists — Tube Geometry conflicts listed below
-TECH DATA  : Conv 4 coils / 2.90" ID | Rad 4 coils / 2.90" + 3.826" ID
-BID ENTRY  : DSP#26030 | 6-Mar-2026 | T&M | pending | Shared with H-29 — DSP total: $145,000
+TECH DATA  : Conv 4 circuits / 2.90" ID | Rad 4 circuits / 2.90" + 3.826" ID
+JOB HISTORY: DSP#26030 | 6-Mar-2026 | T&M | Shared with H-29 — DSP total: $145,000
 EST. HOURS : rig-in 8 hrs [estimated, truck-level shared] / pig 40 hrs [estimated, truck-level shared] / rig-out 8 hrs [estimated, truck-level shared]
+             → written to Notes section (pre-job — no job number yet)
 CONFIDENCE : HIGH
 ISSUES     : none
              ⚠ OR: Tube Geometry conflict — [field]: existing [X] vs incoming [Y]
@@ -460,7 +519,7 @@ Post-conversion cleanup:
 - USADeBusk companion doc has unit tag but unit folder does not exist and client is unknown → flag, route to `00-inbox`
 - Job report heater identification fails → flag, ask Jesse before writing to any heater card
 - Conversion produces <100 words → flag as possible extraction failure
-- Image-only PDF → flag, tell Jesse to run through Gemini
+- Image-only PDF → flag as extraction failure, hold for Jesse. No automated OCR path available
 
 ---
 
@@ -468,11 +527,11 @@ Post-conversion cleanup:
 
 - **Never write files during dry-run.**
 - **Never overwrite existing Tube Geometry fields** without Jesse confirmation when conflict exists.
-- **Never overwrite Field Notes subsections.** Append only. Pre-Execution Estimate subsections are permanent historical record.
+- **Never overwrite Field Notes subsections.** Append only. Field Notes entries require a real job number — DSP pre-job estimates go in the Notes section.
 - **Never route a client facility doc into the facility overview file.** Client procedures and policies are always separate companion files at the facility folder level.
 - **Never create new client folders for unknown clients.** Flag unknowns.
-- **Create missing subfolders for known clients automatically.** Note in dry-run output.
-- **Never set Bid History status beyond `pending`.** Jesse updates manually.
+- **Create missing site-level folders (`[Client]/[City-State]/`) for known clients automatically.** Note in dry-run output. No per-heater subfolders exist in the flat structure.
+- **DSP ingest populates Job History and Notes only.** Jesse updates Job History manually when a job is awarded. The skill never fills in a Job # — only the Quote reference (DSP#).
 - **Batch limit:** 20 input files per session. Note: one DSP with 4 heaters = 4 card operations. Flag and prompt before continuing if card operation count exceeds 40.
 - **Always confirm vault root path** at session start if not established in context.
 - **Conflicts block ingest.** Any flagged Tube Geometry conflict or unresolved heater identification must be resolved by Jesse before /ingest proceeds on the affected card. Other cards in the batch may proceed.

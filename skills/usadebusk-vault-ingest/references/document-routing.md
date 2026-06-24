@@ -19,9 +19,8 @@ Signals: DSP# in filename or content AND "Requested Service" AND "Technical Info
 ### Priority 3 — USADeBusk Companion Document
 Signals: formal USADeBusk doc number (SOP-*, DCK-*, CO-*) OR authored by USADeBusk/DeBusk
 Services Group; client + unit tag present; no USA#, no DSP# triggering full DSP logic
-→ `02-facilities/[Client]/[City-State]/[existing-unit-folder]/[doc-name].md`
+→ `02-facilities/[Client]/[City-State]/[doc-name].md` (flat — alongside heater cards at site level)
 → Use the document number as filename (e.g. `SOP-DCK-F802-001.md`, `CO-USA26022-001.md`)
-→ If unit subfolder does not exist, create automatically for known clients
 → doc_type: `sop`, `change-order`, `pre-job-package`, or `other` as appropriate
 
 ### Priority 4 — Client Facility Document
@@ -40,11 +39,11 @@ client letterhead, client document numbers, or procedural/policy language as the
 
 ### Priority 5 — Heater Card (standalone)
 Signals: unit tag + tube geometry table, no DSP#, no job number
-→ `02-facilities/[Client]/[City-State]/Unit-[UnitID]-[Service]/[UnitID].md`
+→ `02-facilities/[Client]/[City-State]/[HeaterTag].md`
 
 ### Priority 6 — Facility Overview
 Signals: client + city/state, no unit tag, no DSP#, no job number, not procedural in nature
-→ `02-facilities/[Client]/[City-State]/[Client-City-State].md`
+→ `02-facilities/[Client]/[City-State]/_facility.md`
 
 ### Priority 7 — Knowledge/Reference
 Signals: no client or job reference; technical content only

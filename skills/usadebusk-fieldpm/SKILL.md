@@ -1,9 +1,12 @@
 ---
 name: usadebusk-fieldpm
+status: legacy
 description: Load this skill for any USADeBusk field project management task — setting up a job project, extracting and structuring service receipt data, logging shift notes, generating payroll email bodies, tracking job progress against the quote, or compiling the final job report. Trigger on commands /setup, /extract, /log, /email, /status, /report, or any mention of service receipts, shift change, pig counts, field notes, job progress, or job report assembly. Load alongside usadebusk-core always. Load usadebusk-equipment when pig sizing or hardware questions arise mid-job.
 ---
 
 # USADeBusk — Field Project Management
+
+> ⚠ **LEGACY** — claude.ai Projects thread-memory model only. Superseded for Claude Code / vault workflows by Phase 2.1+ command layer. No active jobs currently use this skill.
 
 ## Overview
 

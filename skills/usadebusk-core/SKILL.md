@@ -109,34 +109,48 @@ Pass/circuit count · Tube ID (conv and rad) · Flange size & rating · Total fo
 
 ## Heater Card Schema
 
-The heater card is the canonical structured record for one fired heater and the single source of truth for heater facts. Downstream skills read these as fields rather than inferring them: `usadebusk-estimating`, `usadebusk-sop`, and `usadebusk-vault-ingest` defer to this schema for what fields mean and which behavior they gate, and none of them redefine it. Card instances live in the vault under `02-facilities/...`; blank scaffolds live in `templates/`.
+The heater card is the canonical structured record for one fired heater and the single source of truth for heater facts. Downstream skills read these as fields rather than inferring them: `usadebusk-estimating`, `usadebusk-sop`, and `usadebusk-vault-ingest` defer to this schema for what fields mean and which behavior they gate, and none of them redefine it. Card instances live in the vault under `02-facilities/<Client>/<City-ST>/<HeaterTag>.md` (flat — no per-heater subfolders). `_facility.md` lives alongside heater cards at the site level. The canonical exemplar is `04-knowledge/_canonical-heater-card.md`; templates and vault-ingest derive their structure from it.
 
 ### Fact / decision wall (core principle)
-- **Facts** about the heater — tube geometry, metallurgy, flange details, return-bend type, water supply — live in the technical tables below. A fact is a heater property a drawing or field measurement establishes.
+- **Facts** about the heater — tube geometry (including per-section metallurgy, arrangement, and return-bend type), flange details, water supply — live in the technical tables below. A fact is a heater property a drawing or field measurement establishes.
 - **Decisions** the customer makes — filtration, smart pigging/inspection — live ONLY in the quarantined Job Options table, recorded as status (Optional / Elected / Declined / TBD), never as a spec. A decision placed in a fact table causes estimating and SOP errors downstream.
 - **Pumping-unit type is NOT a card field.** It is a per-job dispatch decision, not a heater property — never recorded or inferred on the card. TriMax is the default unit for essentially all jobs; the double pumper is explicit-only (see `usadebusk-equipment`).
 
-### Tube geometry
-One table, one row per distinct pipe ID per section. Add a row only when a section contains more than one pipe ID; default is a single row per section.
+### Identity
+Card-level facts only. Anything that can differ by section (metallurgy, return bend type) does NOT belong here. Fields: Client, Facility, Unit ID, Heater type, Configuration.
 
-| Section | OD (in) | Sched | Wall (in) | ID (in) | Tubes/Coil | Avg Length (ft) | Length/Coil (ft) | Notes |
-|---|---|---|---|---|---|---|---|---|
+### Tube geometry
+One table, one row per physical segment in flow order. A heater with a single-ID radiant section gets one Radiant row; multi-segment radiant sections (e.g. 210-1403A, 210-1404B) get one row per pipe-size segment, labeled "segment N of M."
+
+| Section | Arrangement | Metallurgy | OD (in) | Sched | Wall (in) | ID (in) | Tubes/Circuit | Avg Length (ft) | Length/Circuit (ft) | Return Bend Type | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|
 
 - `ID` is what pig sizing keys off; `OD` + `Sched` are how ID is verified against a drawing. Record all three when available — never drop OD/Sched.
-- `Tubes/Coil` = tube count in ONE pass of that geometry (one coil = one pass). Pass count is not a column here — the config rollup carries it.
+- `Tubes/Circuit` = tube count in ONE circuit of that geometry. Circuit count is not a column here — the Config Rollup carries it.
+- **Arrangement:** Convection defaults to Horizontal. Radiant has NO default — state explicitly or `(not recorded)`; genuinely ~50/50 across heater types.
+- **Metallurgy and Return Bend Type are PER-SECTION, not card-level.** Mixed-metallurgy heaters exist (e.g. carbon convection / stainless radiant). Do not promote either to Identity or a card-level Connection Info row. "Stainless" without a specific grade is a complete fact, not a placeholder — triggers passivation/filtration handling regardless of alloy.
+- **`(not recorded)` is the universal honest placeholder** for missing data. Customers don't always supply full tube specs. Never silently omit a key — make the gap explicit.
 
-### Config rollup (estimating reference)
-| Config | Section | Coils | Pipe IDs (in) | Tubes | Total Length |
+### Config Rollup (estimating reference)
+Two rows always present — not alternatives, not "current vs. historical." A heater's coil/loop arrangement is a permanent physical fact, not a per-job choice.
+
+| Scale | Section | Pipe ID(s) (in) | Total Tubes | Total Length (ft) | Notes |
 |---|---|---|---|---|---|
-| 1 Pass | | 1 | | | |
-| N Passes | | N | | | |
+| Per circuit | | | | | |
+| Heater total | | | | | State loop arrangement, e.g. "10 coils looped to 5 passes" |
 
-- **1 Pass** = one circuit in isolation. **N Passes** = all passes (single-pass values × pass count; Coils = N).
-- Edge case: when passes sharing a pipe ID have unequal tube counts, the single-pass figure is an average, not an exact count — flag it rather than dividing blindly.
-- Total Length (all passes) feeds the cleaning-rate duration estimate.
+- **Per circuit** = single-circuit base unit; matches Tube Geometry's Tubes/Circuit and Length/Circuit exactly. This is the estimating multiplication base.
+- **Heater total** = full installed total accounting for the actual loop arrangement. The variable is SCALE (per-unit vs. total), not TIME (past vs. present).
+- Edge case: when circuits sharing a pipe ID have unequal tube counts, the single-circuit figure is an average — flag it rather than dividing blindly.
+- Total Length (heater total) feeds the cleaning-rate duration estimate.
+- If loop arrangement is unstated in source data, Notes = `(not recorded)` — do not infer from job duration or TriMax count.
+- Physical reconfiguration (rare, flaw-driven) updates the Heater total row in place with the new arrangement and job/date; prior arrangement logged in Field Notes.
 
 ### Connection info (facts)
-Launcher flange (size / rating# / type, e.g. RFWN) · Receiver flange · Return-bend type (180° U-bend / plug-type "mule ear" header — see `usadebusk-sop` for the distinction) · Water supply source · Max pig OD. Metallurgy (frontmatter + identity) gates NACE/passivation eligibility per the Metallurgy section above; election is still a customer decision recorded in Job Options.
+Launcher flange (size / rating# / type, e.g. RFWN) · Receiver flange · Water supply source · Max pig OD (governing tube ID + 0.250″, computed from the smallest ID across all sections/segments). Return-bend type and metallurgy are per-section — they live in Tube Geometry, not here.
+
+### Pig Specifications
+Own section — not folded into Connection Info. Estimating/tooling reference: pig sizes, types, quantities, unit cost, billing basis, and source quote for this heater.
 
 ### Job Options (quarantined decisions)
 Status only, never facts. Filtration · Smart pigging / inspection. Status ∈ {Optional, Elected, Declined, TBD}. Estimating and SOP read election status here; they never read a decision from a fact table.
