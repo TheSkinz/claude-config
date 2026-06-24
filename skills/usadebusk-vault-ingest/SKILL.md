@@ -7,7 +7,7 @@ description: "Load this skill when ingesting documents into the obsidian-usadebu
 
 ## Dependencies
 Load alongside:
-- `obsidian-cli` — live vault interaction, search, property management
+- `wiki-cli` — live vault interaction, search, property management
 - `obsidian-markdown` — Obsidian Flavored Markdown syntax (wikilinks, callouts, frontmatter)
 
 ## Purpose
