@@ -75,10 +75,6 @@ obsidian-usadebusk/
 │       └── [City-State]/
 │           ├── _facility.md              # site-level facts (underscore sorts first)
 │           └── [HeaterTag].md            # heater card — flat, no per-heater subfolders
-├── 03-jobs/           # job notes
-│   └── [Client]/
-│       └── USA#####.md                      # one file per job number (US jobs)
-│       └── CND#####.md                      # one file per job number (Canadian jobs)
 ├── 04-knowledge/      # reference / technical knowledge
 ├── 05-projects/       # system prompts, pipeline, revenue
 └── 06-insights/       # insights log
@@ -359,18 +355,12 @@ DERIVED but hand-entered (no formula layer) — re-sum on any edit, do not trust
 
 ## Job Report Ingestion Logic
 
-Job reports (USA#####) update two places:
+Job reports (USA#####) are dissolved into heater cards — they are NOT stored as standalone job files (that folder is retired). Job-level commercial data (revenue, PO, cost) lives in the file estate, not the vault.
 
-### 1. Job card — `03-jobs/[Client]/USA#####.md`
-Append or create with:
-- Job number, client, facility, execution dates
-- Resources deployed
-- Field reports as subsections under `## Field Reports`
-
-### 2. Heater card(s) — for each heater worked on the job
+### Heater card(s) — for each heater worked on the job
 To identify which heaters a job touches:
 1. Scan job report for explicit unit tags (e.g. H-28, 210-1401A) — primary signal
-2. If no unit tags found, check job card metadata for linked heaters
+2. If no unit tags found, infer from facility + scope context in the report
 3. If still unresolved, flag and ask Jesse before writing to any heater card
 
 For each identified heater:
@@ -386,9 +376,6 @@ For each identified heater:
 ### Heater cards
 - Update in place per Tube Geometry Conflict Detection rules
 - Append to Job History, Task Durations, Field Notes — never overwrite
-
-### Job cards
-- Append field reports as subsections under `## Field Reports`
 
 ### Other files
 - Append revision suffix (`-r2`, `-r3`) on collision
@@ -460,10 +447,10 @@ ISSUES     : none
 FILE: [original filename]
 ─────────────────────────────
 SOURCE TYPE : docx / pdf
-TARGET PATH : 03-jobs/Valero/USA26025.md
+TARGET PATH : 02-facilities/Valero/Port-Arthur-TX/H-102A.md (job report → dissolves into heater card(s))
 STATUS      : new file (safe to write)
               ⚠ OR: collision — will write as USA26025-r2.md
-              ⚠ OR: field report — will merge into existing job card
+              ⚠ OR: field report — will merge into existing heater card(s)
 HEATERS     : [unit tags found in document, or "none identified"]
 CONFIDENCE  : HIGH / MEDIUM / LOW
 ISSUES      : [any flags, or "none"]
@@ -472,7 +459,7 @@ ISSUES      : [any flags, or "none"]
 
 ### Summary block (after all files):
 ```
-TOTAL: N documents → N heater card operations, N job cards, N other files
+TOTAL: N documents → N heater card operations, N other files
   HIGH confidence  : N
   MEDIUM confidence: N
   LOW confidence   : N

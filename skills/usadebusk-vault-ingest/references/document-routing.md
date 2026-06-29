@@ -6,8 +6,7 @@ The `doc_type` enum for all types lives in the Frontmatter Template section of S
 
 ### Priority 1 — Job Report
 Signals: `USA\d{5}` or `CND\d{5}` in filename OR first 500 words — takes precedence even if DSP# also present
-→ `03-jobs/[Client]/USA#####.md` or `03-jobs/[Client]/CND#####.md`
-→ Also update relevant heater cards per `## Job Report Ingestion Logic` in SKILL.md
+→ Dissolve into the relevant heater card(s) per `## Job Report Ingestion Logic` in SKILL.md — no standalone job file is created. Job-level commercial data (revenue, PO, cost) stays in the file estate.
 
 **Why job number takes priority:** Job reports frequently reference DSP numbers and contain
 technical language. Checking for USA##### first prevents misclassification of job reports as DSPs.
