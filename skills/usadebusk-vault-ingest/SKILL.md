@@ -24,7 +24,7 @@ pip show markitdown 2>/dev/null || pip install "markitdown[docx]" --quiet
 Note: the base `markitdown` package does not include DOCX support. Always install with `[docx]`.
 
 ### Vault root
-Default: `C:\Users\Jwuts\OneDrive\obsidian-usadebusk`
+Default: `C:\Users\Jwuts\obsidian-work`
 Confirm with Jesse if session context suggests otherwise.
 
 ### Staging folder (drop zone for raw documents)
@@ -32,8 +32,11 @@ Confirm with Jesse if session context suggests otherwise.
 Create if it doesn't exist.
 
 ### OneDrive vault safety
-Before any recursive vault read, move, or delete, follow `references/vault-onedrive-safety.md`
-(pin state, delete-propagation, conflict sweep). Non-negotiable for OneDrive-backed paths.
+Applies ONLY when the active vault root is a OneDrive-backed path. The default root
+(`C:\Users\Jwuts\obsidian-work`) is not OneDrive-backed, so this does not apply by default.
+If a session is explicitly pointed at the OneDrive vault, then before any recursive vault
+read, move, or delete, follow `references/vault-onedrive-safety.md` (pin state,
+delete-propagation, conflict sweep). Non-negotiable for OneDrive-backed paths.
 
 ---
 
@@ -71,8 +74,7 @@ obsidian-usadebusk/
 │   └── [Client]/
 │       └── [City-State]/
 │           ├── [Client-City-State].md        # facility overview
-│           └── Unit-[UnitID]-[Service]/      # per-heater subfolder
-│               └── [UnitID].md              # heater card
+│           └── [UnitID].md                   # heater card (flat — no per-heater subfolder)
 ├── 03-jobs/           # job notes
 │   └── [Client]/
 │       └── USA#####.md                      # one file per job number (US jobs)
@@ -149,17 +151,16 @@ Also extract at heater or scope level:
 
 Execution plans are structured per truck, not per heater. Apply this logic:
 
-**If one heater per truck:** assign all truck hours directly to that heater card.
+**If one heater per truck:** the truck hours are that heater's DSP estimate.
 
 **If multiple heaters share a truck (sequential execution):**
 - Extract the truck-level total hours
 - Do NOT attempt to split hours automatically
 - Flag in dry-run output: "Truck X hours are shared across [heater list] — hours shown are truck-level totals, not per-heater"
-- Record hours on each card as `[truck-level estimate — shared with siblings]`
 
-**If no execution plan present:** skip estimated hours, note absence in dry-run output. Card is still valid without them.
+**If no execution plan present:** note absence in dry-run output. Card is still valid without them.
 
-Flag all extracted hours as `[estimated]` — these are DSP estimates, not actuals.
+These are DSP estimates, not actuals. **Estimated hours are NEVER written to the heater card** — the `## Task Durations` table is actuals-only. Surface them in the dry-run output and let the estimating workflow own them; the card's table stays blank until a job report supplies actuals.
 
 Fields to extract per truck:
 - Rig-in hours
@@ -172,10 +173,10 @@ DSPs sometimes use inconsistent unit tags across pages (e.g. "210-1401A" on cove
 
 ### Step 6 — Route to heater cards
 For each heater:
-- Target: `02-facilities/[Client]/[City-State]/Unit-[UnitID]-[Service]/[UnitID].md`
+- Target: `02-facilities/[Client]/[City-State]/[UnitID].md` (flat — heater card sits directly in the City-State folder; no per-heater subfolder)
 - If card does not exist: create full card using heater card template below
 - If card exists: see Tube Geometry Conflict Detection below
-- If unit subfolder does not exist: create it automatically for known clients
+- If the facility (City-State) folder does not exist: create it automatically for known clients
 
 ---
 
@@ -263,24 +264,38 @@ tags: []
 | USA#  | Date | Duration (hrs) | Rigs | PM |
 |-------|------|----------------|------|----|
 
+## Task Durations
+<!-- Wall-clock ELAPSED hours per decoke, one row per job (Date = job START, YYYY-MM-DD;
+multi-day span lives in Job History). ACTUALS ONLY — what the job really took, keyed by
+Job #; estimates live in the estimating workflow, never as a row here. Rigs = number of
+TriMax on the job; task hours are ELAPSED, so labor ≈ task hrs × Rigs (per-rig split stays
+in Field Notes, never averaged into this table). Stand-By is tracked but EXCLUDED from Total
+(Total = productive task hours: Rig-In + Pig + Smart Pig + Rig-Over + Rig-Out). Total is
+DERIVED but hand-entered (no formula layer) — re-sum on any edit, do not trust a stale Total.
+  Rig-Over attaches to the heater the equipment moved TO (destination heater; never split
+        or double-counted across heaters on a multi-heater job).
+  Pig includes flow-test hours — before/after flow tests are NOT a separate column; fold
+        into Pig. Add a Flow Test column only when a real receipt breaks the hours out.
+  "–" = task confirmed did NOT occur (e.g. no smart pig on this job).
+  "?" = task occurred-status unrecorded / unknown — distinct from "–". -->
+| Date | Job # | Rigs | Rig-In | Pig | Smart Pig | Rig-Over | Rig-Out | Stand-By | Total |
+|---|---|---|---|---|---|---|---|---|---|
+| | | | | | | | | | |
+
 ## Field Notes
 
-### Pre-Execution Estimate — DSP#[XXXXX]
-**Task Durations:** rig-in X hrs [estimated] / pig X hrs [estimated] / rig-out X hrs [estimated]
-> Note if hours are truck-level shared estimates rather than per-heater
-
 ### [USA#####] — [Month Year]
-**Task Durations:** rig-in X hrs / pig X hrs / rig-out X hrs
 **Pigs Ran:** [sizes and sequence]
 **Obstacles:** [fouling severity, stuck pigs, delays, anything abnormal]
 **Facility Procedures:** [site-specific policies, access requirements, permit conditions worth flagging next bid]
+**Per-rig split (multi-TriMax only):** [e.g. TriMax 4 = 136 hrs, TriMax 6 = 132 hrs — elapsed per-rig totals backing the table]
 ```
 
-**Field Notes structure:**
-- DSP ingest creates a `### Pre-Execution Estimate — DSP#XXXXX` subsection with estimated hours
-- Job report ingest APPENDS a new `### USA##### — Month Year` subsection with actuals
-- The Pre-Execution Estimate subsection is never overwritten — it stays as historical record
-- Never delete or modify existing Field Notes subsections
+**Durations & Field Notes structure:**
+- A blank `## Task Durations` table is created with the card. It is ACTUALS ONLY — DSP/estimate hours are never written here or in Field Notes; estimates live in the estimating workflow.
+- Job report ingest fills one `## Task Durations` row (actuals) AND appends a `### USA##### — Month Year` Field Notes subsection for the narrative (pigs ran, obstacles, facility procedures, per-rig split when multi-TriMax).
+- The structured table carries the numbers; Field Notes carries the "why." Never duplicate the duration numbers as prose in Field Notes.
+- Never delete or modify existing Field Notes subsections.
 
 ---
 
@@ -302,8 +317,8 @@ To identify which heaters a job touches:
 
 For each identified heater:
 - Append a row to `## Execution History`
-- Append a new `### USA##### — Month Year` subsection under `## Field Notes` with actuals
-- Do not modify Pre-Execution Estimate subsections
+- Fill one actuals row in the `## Task Durations` table (Date, Job #, Rigs, elapsed task hours, Stand-By, Total = sum of productive task columns excluding Stand-By). Follow the schema conventions in that section's comment (Rig-Over → destination heater; Pig includes flow-test hours; "–"/"?" usage).
+- Append a new `### USA##### — Month Year` subsection under `## Field Notes` for the narrative only (pigs ran, obstacles, facility procedures, per-rig split). Do not restate the duration numbers as prose.
 - Do not alter Tube Geometry or Overview unless new data contradicts existing (flag per conflict detection rules above)
 
 ---
@@ -369,7 +384,7 @@ HEATERS IDENTIFIED: H-28, H-29
 TRUCK STRUCTURE: Truck 1 → H-28 + H-29 (shared hours)
 ─────────────────────────────
 HEATER     : H-28
-TARGET PATH: 02-facilities/P66/Ponca-City-OK/Unit-H-28-Coker/H-28.md
+TARGET PATH: 02-facilities/P66/Ponca-City-OK/H-28.md
 STATUS     : new card (will create)
              ⚠ OR: card exists — Tube Geometry conflicts listed below
 TECH DATA  : Conv 4 coils / 2.90" ID | Rad 4 coils / 2.90" + 3.826" ID
@@ -468,7 +483,8 @@ Post-conversion cleanup:
 
 - **Never write files during dry-run.**
 - **Never overwrite existing Tube Geometry fields** without Jesse confirmation when conflict exists.
-- **Never overwrite Field Notes subsections.** Append only. Pre-Execution Estimate subsections are permanent historical record.
+- **Never overwrite Field Notes subsections.** Append only.
+- **`## Task Durations` is actuals-only.** Never write DSP/estimated hours to it or restate duration numbers as prose in Field Notes.
 - **Never route a client facility doc into the facility overview file.** Client procedures and policies are always separate companion files at the facility folder level.
 - **Never create new client folders for unknown clients.** Flag unknowns.
 - **Create missing subfolders for known clients automatically.** Note in dry-run output.
