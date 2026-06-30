@@ -1,68 +1,17 @@
 # CLAUDE.md (Global)
 
-## Who I Am
-Jesse — project manager and field supervisor at USADeBusk.
-Job numbering conventions (DSP#, USA#, YYNNN): see `usadebusk-core`.
+**Who I am.** Jesse Utsey — technical specialist at USADeBusk (fired heater decoking / pigging). I run the full workflow cycle: technical sales, proposals, estimating, engineering-document analysis, and field ops. Treat me as a high-autonomy operator who wants direct, correct answers, not a "Project Manager" who needs hand-holding (that title is stale).
 
-## How Claude Should Work With Me
-- Push back when something is wrong, inefficient, or a better path exists. Say it directly.
-- Ask clarifying questions before building anything. If the problem isn't fully defined, ask one clarifying question immediately — do not generate output first.
-- Verify approach before execution on any significant task. Flag failure modes before running.
-- After two consecutive failures for the same class of reason, stop and diagnose before trying again.
-- If a substantially more efficient path exists, say so. Do not silently comply with an inferior approach.
-- When something isn't ready or Jesse is wrong about something: say so explicitly.
+**Vault.** Canonical path is `C:\Users\Jwuts\obsidian-work`. Ignore any reference to the old OneDrive vault path.
 
-## Output Formatting
-- Concise by default. Full length only when task quality requires it.
-- No bullet points in explanations, reports, prose, or analysis. Write in sentences and paragraphs. Bullets only for genuinely enumerable content: equipment lists, step sequences, checklists.
-- No excessive headers. Headers serve navigation, not decoration.
-- No emojis unless Jesse uses them first.
-- No preamble restating the question. No closing summary restating the answer.
-- Correct errors directly. Flag problems immediately without waiting to be asked.
+**Config repo.** https://github.com/TheSkinz/claude-config — local clone at `~/.claude`, which IS the live runtime directory. There is no separate deploy step; editing here edits production. Fetch before working on it.
 
-## Session Mode Inference
-Infer mode from context. Do not ask Jesse to confirm which mode is active.
-- Research: direct recommendation first, alternatives second with explicit trade-offs.
-- Brainstorming: direct recommendation first, then alternatives from genuinely different angles.
-- Implementation: verify approach before generating output. Confirm data model, environment, or architecture first. If "done" is undefined, ask.
-- Writing/editing: match Jesse's voice and intent. Flag when a draft works against its own stated goal.
+**Skills.** Load `usadebusk-core` for any USADeBusk task, plus the relevant domain skill(s) by task type. Skills live at `~/.claude/skills/`. Do not duplicate skill content here.
 
-## Vault Reference
-USADeBusk operational knowledge lives at `C:\Users\Jwuts\OneDrive\obsidian-usadebusk\`.
-When working on USADeBusk tasks from that directory, the vault's CLAUDE.md governs document formatting (SOP standards, output format). It takes precedence over system prompts on formatting; system prompts govern behavior and role.
+**Working style.** Concise by default. Push back when something is wrong or a better path exists — say it directly. Flag failure modes before running. After two consecutive failures from the same root cause, stop and diagnose before a third attempt. Don't ask for confirmation on routine or reversible work — state assumptions and proceed. Reserve full ceremony (verify-before-execute) for hard-to-reverse operations: git history, schema, architecture, and client deliverables.
 
-## Skills
-Always load `usadebusk-core` for any USADeBusk task, plus the relevant domain skill:
-- Proposals/estimating -> `usadebusk-estimating`
-- SOPs/procedures/schematics -> `usadebusk-sop`
-- Field execution/job setup -> `usadebusk-fieldpm`
-- Ops paperwork/tickets -> `usadebusk-ops`
-- Equipment/pig sizing -> `usadebusk-equipment`
+**Output.** No bullet points in prose, reports, or analysis — write in sentences. Bullets only for genuinely enumerable content (equipment lists, step sequences). No excessive headers. No emojis unless I use them first. No preamble restating the question, no closing summary restating the answer. Infer session mode (research / brainstorm / implementation / writing) silently — do not ask which is active.
 
-## Hard Constraints
-- Do not modify finalized or client-deliverable documents without explicit confirmation.
-- Do not assume a task is complete until output has been verified.
-- Do not duplicate technical constraints that live in skill files or the MTR — pointer to the source is sufficient.
-- Git commits run autonomously. Any command touching C:\Users\Jwuts\USADEBUSK\ requires explicit confirmation before running.
-- Config repo: https://github.com/TheSkinz/claude-config (local: ~/.claude)
+**Hard constraints.** Recon before drafting: read the actual files and paste real content — never infer or assert unverified specifics as certain. On every commit, check the staged file count against what you intend to commit before running it. Don't modify finalized or client-deliverable documents without explicit confirmation.
 
-## Model Behavior
-- Default effort: `medium` for routine tasks. Use `high` for complex estimating,
-  SOP drafting, or multi-step field execution work.
-- Do not use `xhigh` unless Jesse explicitly requests it.
-- Never reuse rates from a prior job without explicit confirmation. Canonical
-  rate-discipline rule lives in `usadebusk-estimating` — do not duplicate here.
-
-## Goal-Driven Execution
-Transform imperative tasks into verifiable goals before starting.
-
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
-
-For multi-step tasks, state a brief plan before executing:
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+**Git guard.** A PreToolUse hook (`~/.claude/hooks/usadebusk-git-guard.mjs`) blocks git mutation verbs on commands containing a `USADEBUSK\` directory path. A block there is expected behavior, not an error — get explicit confirmation, then proceed.

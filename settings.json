@@ -50,6 +50,19 @@
       }
     }
   },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"C:\\\\Users\\\\Jwuts\\\\.claude\\\\hooks\\\\usadebusk-git-guard.mjs\""
+          }
+        ]
+      }
+    ]
+  },
   "theme": "dark",
   "agentPushNotifEnabled": true,
   "tui": "fullscreen"
