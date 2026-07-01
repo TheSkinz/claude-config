@@ -1,6 +1,12 @@
-# OneDrive vault safety — mandatory before any recursive read, move, or delete under `OneDrive\obsidian-usadebusk`
+# OneDrive vault safety — mandatory before any recursive read, move, or delete under a OneDrive-backed vault root
 
-The vault is OneDrive-backed with Files On-Demand. A local `Test-Path` "absent" is not proof of
+No vault is currently OneDrive-backed. The canonical vault (`C:\Users\Jwuts\obsidian-work`, per
+`vault-source-of-truth.md`) is not on OneDrive. This procedure applies only if a future session is
+explicitly pointed at a OneDrive-backed vault path — substitute that path for `[OneDrive vault root]`
+below. The former OneDrive vault (`OneDrive\obsidian-usadebusk`) was retired 2026-06-27; do not use
+it as a live example path.
+
+A OneDrive-backed vault uses Files On-Demand. A local `Test-Path` "absent" is not proof of
 deletion — the cloud can re-sync a folder back if the delete never propagated online. Placeholder
 (online-only) files read as present but may have no local content.
 
@@ -10,7 +16,7 @@ misreads a placeholder. Use the system32 `attrib.exe` directly — some shells c
 reading it.
 
 ```powershell
-C:\Windows\System32\attrib.exe +p /s /d "C:\Users\Jwuts\OneDrive\obsidian-usadebusk\*"
+C:\Windows\System32\attrib.exe +p /s /d "[OneDrive vault root]\*"
 ```
 
 Caveat: the pinned (P) attribute can be silently cleared by a rename in some tools. After any batch
@@ -26,7 +32,7 @@ Dual sync (Obsidian Sync + OneDrive) can produce conflict copies. Sweep and reso
 or recursive reads will treat twins as real cards:
 
 ```powershell
-Get-ChildItem -Recurse -Path "C:\Users\Jwuts\OneDrive\obsidian-usadebusk" -Filter "*.md" |
+Get-ChildItem -Recurse -Path "[OneDrive vault root]" -Filter "*.md" |
   Where-Object { $_.Name -match "-DESKTOP-|\.sync-conflict|-\d{8}-\d{6}" }
 ```
 

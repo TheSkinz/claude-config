@@ -1,6 +1,6 @@
 ---
 name: usadebusk-vault-ingest
-description: "Load this skill when ingesting documents into the obsidian-usadebusk vault. Handles conversion of DOCX and text-layer PDFs to Markdown using MarkItDown, infers vault placement from filename/content, applies frontmatter, and writes to the correct vault folder. DSPs are dissolved into per-heater cards. Commands: /convert, /ingest, /dry-run. Always load alongside usadebusk-core."
+description: "Load this skill when ingesting documents into the obsidian-work vault. Handles conversion of DOCX and text-layer PDFs to Markdown using MarkItDown, infers vault placement from filename/content, applies frontmatter, and writes to the correct vault folder. DSPs are dissolved into per-heater cards. Commands: /convert, /ingest, /dry-run. Always load alongside usadebusk-core."
 ---
 
 # USADeBusk Vault Ingest Skill
@@ -11,7 +11,7 @@ Load alongside:
 - `obsidian-markdown` — Obsidian Flavored Markdown syntax (wikilinks, callouts, frontmatter)
 
 ## Purpose
-Convert raw DOCX and PDF documents into vault-ready Markdown files and route them to the correct location in the obsidian-usadebusk vault. DSP proposals are dissolved into individual heater cards — one card per heater. All operations default to dry-run mode — no files are written until Jesse explicitly approves the plan.
+Convert raw DOCX and PDF documents into vault-ready Markdown files and route them to the correct location in the obsidian-work vault. DSP proposals are dissolved into individual heater cards — one card per heater. All operations default to dry-run mode — no files are written until Jesse explicitly approves the plan.
 
 ---
 
@@ -67,7 +67,7 @@ delete-propagation, conflict sweep). Non-negotiable for OneDrive-backed paths.
 ## Vault Schema
 
 ```
-obsidian-usadebusk/
+obsidian-work/
 ├── 00-inbox/          # capture, staging, raw-docs drop zone
 ├── 01-context/        # standing context files (auto-loaded by Cowork)
 ├── 02-facilities/     # facility-level docs
@@ -76,9 +76,9 @@ obsidian-usadebusk/
 │           ├── _facility.md              # site-level facts (underscore sorts first)
 │           └── [HeaterTag].md            # heater card — flat, no per-heater subfolders
 ├── 04-knowledge/      # reference / technical knowledge
-├── 05-projects/       # system prompts, pipeline, revenue
 └── 06-insights/       # insights log
 ```
+`03-jobs/` and `05-projects/` are retired — job actuals dissolve into heater cards (see `## Job Report Ingestion Logic` below), not standalone files.
 
 ### Known clients (32 active)
 BASF, BP, Big-West-Oil, Buckeye, CHS, CITGO, Cenovus, Chevron, Delek, Denka, Energy-Transfer, ExxonMobil, FHR, Flint-Hills, Formosa, HCC, HF-Sinclair, Hunt, Ingevity, Invista, Magellan-ONEOK, Marathon, ONEOK, P66, PEMEX, Par-Pacific, PBF, Sniper-Elite, Suncor, Targa, Valero, Westlake
